@@ -1,0 +1,41 @@
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+
+DEPENDENCIES
+
+Some of the functions in this module require other modules and libraries.
+In order to use all of the included functions, you should install the
+following modules. However, most functions will work without them.
+
+  Term::ReadKey
+  File::Temp        # part of the core distribution after Perl 5.6.1
+  XML::LibXML       # Only for the libxml specific functions
+  LWP::Simple       # Not used often
+
+
+DEBIAN
+
+This is a complete list of debian packages that provide the above modules:
+
+  libterm-readkey-perl
+  libxml-libxml-perl
+  libwww-perl             # for LWP::Simple
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (c) 2005 Dean Serenevy. All rights reserved.
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+Dean Serenevy
+dean@serenevy.net
+http://dean.serenevy.net

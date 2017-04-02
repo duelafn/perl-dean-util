@@ -1,0 +1,10 @@
+*.bak
+/Build
+/Dean-Util-*.tar.gz
+/MANIFEST
+/META.*
+/MYMETA.*
+/_build
+/dpkg
+Drafts.pm
+TestUtil.pm
