@@ -22,6 +22,10 @@ Build: Build.PL VERSION
 MANIFEST: MANIFEST.SKIP Build
 	./Build manifest
 
+test:
+	perl -Ilib -MDean::TestUtil -e1
+	prove -Ilib t
+
 dist: MANIFEST Build update-version
 	./Build dist
 
