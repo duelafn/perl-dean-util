@@ -35,7 +35,7 @@ update-version:
 
 clean: Build
 	./Build clean
-	rm -rf _build
+	rm -rf _build .prove
 	rm -f Build MANIFEST *.bak
 	rm -f META.json META.yml MYMETA.json MYMETA.yml
 
