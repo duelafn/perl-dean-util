@@ -1,18 +1,25 @@
 Source: libdean-util-perl
 Section: perl
 Priority: optional
-Build-Depends: debhelper (>= 9)
-Build-Depends-Indep: perl (>= 5.14)
 Maintainer: Dean Serenevy <dean@serenevy.net>
-Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 10),
+ libmodule-build-perl,
+ perl
+Standards-Version: 4.0.0
 Homepage: https://github.com/duelafn/perl-dean-util
 
 Package: libdean-util-perl
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, libterm-readkey-perl
-Recommends: libwww-perl, libdate-manip-perl, libdatetime-perl
-Suggests: libxml-libxml-perl, libcolor-calc-perl, libpath-class-perl, libperlio-gzip-perl
-Description:  Utilities created by Dean Serenevy
+Depends: ${misc:Depends}, ${perl:Depends},
+ libterm-readkey-perl
+Recommends: libdate-manip-perl,
+ libdatetime-perl,
+ libwww-perl
+Suggests: libcolor-calc-perl,
+ libpath-class-perl,
+ libperlio-gzip-perl,
+ libxml-libxml-perl
+Description: Utilities created by Dean Serenevy
  This is a set of utility functions that I find myself rewriting frequently.
  Normally, putting functions into a module introduces a dependency on that
  module which can be a hassle in some situations. This is a "smart" module
