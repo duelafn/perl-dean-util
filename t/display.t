@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 2;
-BEGIN { use_ok 'Dean::TestUtil', qw/:display/ }
+BEGIN { use_ok 'Dean::Util', qw/:display/ }
 
 #-----------------------------------------------------------------
 #                   :display - Display functions

@@ -2,7 +2,7 @@
 use strict; use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/:html/;
+use Dean::Util qw/:html/;
 
 
 # uri

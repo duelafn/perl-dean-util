@@ -3,10 +3,10 @@ use strict;
 use warnings;
 
 use Test::More tests => 4;
-BEGIN { use_ok 'Dean::TestUtil', qw/:utility/ }
+BEGIN { use_ok 'Dean::Util', qw/:utility/ }
 
 #-----------------------------------------------------------------
-#                 :utility - Using Dean::TestUtil
+#                 :utility - Using Dean::Util
 #-----------------------------------------------------------------
 use File::Temp qw/tempfile/;
 my ($fh, $filename) = tempfile() or die;
@@ -21,7 +21,7 @@ close $fh;
 $fh = undef;
 open $fh, "<", $filename or die "$!";
 my $funcs = join " ", sort split /\s+/, join "", <$fh>, " POD_ONLY ", " INCLUDE_POD";
-my $exprt = join " ", sort @Dean::TestUtil::EXPORT_OK;
+my $exprt = join " ", sort @Dean::Util::EXPORT_OK;
 close $fh;
 
 is( "$funcs", "$exprt", "Exportable files matches export list" );
@@ -39,7 +39,7 @@ ok( 1 ); # How to test!?
 # Test 4: insert_Dean_Util_functions
 #-----------------------------------
 open $fh, ">", $filename or die "$!";
-print $fh "use Dean::TestUtil qw/ $funcs /;";
+print $fh "use Dean::Util qw/ $funcs /;";
 close $fh;
 
 insert_Dean_Util_functions $filename;

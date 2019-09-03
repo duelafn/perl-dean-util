@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 24;
-BEGIN { use_ok 'Dean::TestUtil', qw/:input/ }
+BEGIN { use_ok 'Dean::Util', qw/:input/ }
 
 #-----------------------------------------------------------------
 #                   :input - Prompting and input

@@ -4,7 +4,7 @@ use warnings;
 use YAML;
 
 use Test::More tests => 21;
-BEGIN { use_ok 'Dean::TestUtil', qw/:parse deep_eq/ }
+BEGIN { use_ok 'Dean::Util', qw/:parse deep_eq/ }
 
 #-----------------------------------------------------------------
 #             :parse - General Interpreters / Parsers

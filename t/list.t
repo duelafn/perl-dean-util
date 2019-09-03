@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 32;
-BEGIN { use_ok 'Dean::TestUtil', qw/:list/ }
+BEGIN { use_ok 'Dean::Util', qw/:list/ }
 
 
 

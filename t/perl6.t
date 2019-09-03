@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 3;
-BEGIN { use_ok 'Dean::TestUtil', qw/:perl6/ }
+BEGIN { use_ok 'Dean::Util', qw/:perl6/ }
 
 #-----------------------------------------------------------------
 #                    :perl6 - Perl 6 functions

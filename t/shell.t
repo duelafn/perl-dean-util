@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/ :shell /;
+use Dean::Util qw/ :shell /;
 
 # safe_pipe
 {

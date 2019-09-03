@@ -4,7 +4,7 @@ use warnings;
 use Encode;
 
 use Test::More;
-use Dean::TestUtil qw/:canonicalize/;
+use Dean::Util qw/:canonicalize/;
 
 #-----------------------------------------------------------------
 #                 :canonicalize - Canonicalization

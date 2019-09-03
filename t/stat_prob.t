@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/:stat_prob sum min max/;
+use Dean::Util qw/:stat_prob sum min max/;
 
 #-----------------------------------------------------------------
 #              :stat_prob - Statistical / Probability

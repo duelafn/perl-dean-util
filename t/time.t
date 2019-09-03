@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/:time/;
+use Dean::Util qw/:time/;
 
 
 

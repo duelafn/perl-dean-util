@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil  qw/:file_comp/;
+use Dean::Util  qw/:file_comp/;
 
 
 

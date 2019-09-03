@@ -5,7 +5,7 @@ use warnings;
 # NOTE: This will fail unless we call: prove -I "$(pwd)" t/*.t
 # Needs -I (not PERL5LIB) and an absolute path to satisfy -T
 use Test::More;
-use Dean::TestUtil qw/:untaint/;
+use Dean::Util qw/:untaint/;
 use Scalar::Util qw/ tainted /;
 use re 'taint';
 

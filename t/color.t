@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 5;
-BEGIN { use_ok 'Dean::TestUtil', qw/:color/ }
+BEGIN { use_ok 'Dean::Util', qw/:color/ }
 
 #-----------------------------------------------------------------
 #                          :color - Color

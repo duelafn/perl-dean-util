@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/:math $sqrt2/;
+use Dean::Util qw/:math $sqrt2/;
 
 sub is_zero {
     ok( abs($_[0]) < 0.000000000001, $_[1] );

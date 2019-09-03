@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use Dean::TestUtil qw/:op/;
+use Dean::Util qw/:op/;
 
 #-----------------------------------------------------------------
 #                  :op - Core function extensions

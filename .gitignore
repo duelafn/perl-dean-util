@@ -1,10 +1,12 @@
 *.bak
+.prove
 /Build
 /Dean-Util-*.tar.gz
 /MANIFEST
 /META.*
 /MYMETA.*
 /_build
+/debbuild
 /dpkg
 Drafts.pm
 TestUtil.pm
