@@ -6469,6 +6469,12 @@ leading directories removed) matches shell pattern pattern. The
 metacharacters ('*', '?', and '[]') do not match a '.' at the start of the
 base name.
 
+=item -prune_tex
+
+Discard and prune any auto-generated LaTeX files. Since some extensions are
+used for other purposes (especially, .log), will only prune if a .tex file
+of the same name exists in the same location.
+
 =item -prune_rcs
 
 Discard and prune any files or directories that look like they belong to a
@@ -6519,6 +6525,9 @@ No grouping via (), no -or.
   my $backup_re = qr/~$|^#.*#$|(?:^|\/)\.#|\.bak$|\.tmp(?:\-\w+)?$/;
   my $rcs_pat = qr#^(?:\.svn|CVS|blib|\{arch\}|\.bzr|_darcs|RCS|SCCS|\.git|\.pc|\.\#.*)$#;
   my $prune_rcs_sub = sub { if (-d $_[3]->{stat} and $_[3]->{filename} =~ $rcs_pat) { $File::Find::prune = 1; return 0 } return 1 };
+  my $tex_pat = q#(?:log|dvi|idx|ind|toc|out|aux|lab|bbl|blg|ilg|six|nav|snm|rel|pdf|ps|synctex\.gz)#;
+  my $prune_derived_sub = sub { my $f = $_[3]->{filename}; if ($f =~ s/\.($_[6])$// and -f "$f.$_[5]") { $File::Find::prune = 1; return 0 } return 1 };
+
   sub find {
     my ($dirs, %o, @hits, @exec, %ffo);
     require File::Find;
@@ -6549,6 +6558,7 @@ No grouping via (), no -or.
       $_ eq '-prune_hidden' and do { push @exec, [$prune_re_sub, 0, qr/^\.[^\.\\\/]/ ]; next };
       $_ eq '-prune_backup' and do { push @exec, [$prune_re_sub, 0, $backup_re ]; next };
       $_ eq '-prune_rcs'    and do { push @exec, $prune_rcs_sub; next };
+      $_ eq '-prune_tex'    and do { push @exec, [$prune_derived_sub, tex => $tex_pat]; next };
       $_ eq '-prune_iname'  and do { push @exec, map [$prune_re_sub, 0, qr/$_/i], (ref($_[0]) ? shift() : glob2regexp(shift)); next };
       $_ eq '-prune_name'   and do { push @exec, map [$prune_re_sub, 0, qr/$_/ ], (ref($_[0]) ? shift() : glob2regexp(shift)); next };
       $_ eq '-prune_regex'  and do { push @exec, map [$prune_re_sub, 2, qr/$_/ ], shift; next };
@@ -9609,8 +9619,7 @@ globally by setting C<$_Util::prompt::no_echo>.
       my $h = $opt{allowed};
       if (not ref($h))            { $opt{allowed} = sub { ($_[0] eq $h) ? $h : ($_[0]eq'')?'': undef } }
       elsif (ref($h) eq 'Regexp') { $opt{allowed} = sub { ($_[0] =~ $h) ? (defined $1) ? $1 : $_[0] : ($_[0]eq'')?'':undef } }
-      elsif (ref($h) eq 'ARRAY')  { $h = join "|", map quotemeta, @$h;
-                                    $opt{allowed} = sub { ($_[0] =~ /^($h)$/i) ? $1 : ($_[0]eq'')?'': undef } }
+      elsif (ref($h) eq 'ARRAY')  { $opt{allowed} = sub { my $needle = lc($_[0]); my ($found) = grep $needle eq lc($_), @$h; defined($found) ? $found : ($_[0]eq'')?'': undef } }
       else { carp "Invalid 'allowed' description: $h";
              $opt{allowed} = sub { croak "Invalid 'allowed' description: $h" }
            }
