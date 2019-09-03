@@ -1,6 +1,6 @@
 
 VERSION = $(shell cat VERSION)
-NEW_VERSION = $(shell perl -E 'printf ".3f", 0.001+${VERSION}')
+NEW_VERSION = $(shell perl -E 'printf "%.3f", 0.001+${VERSION}')
 
 .PHONY: debbuild dist clean update-version
 
