@@ -13832,8 +13832,7 @@ No known bugs, if you find one, please report it via email.
 =head1 AUTHOR
 
  Dean Serenevy
- dean@cs.serenevy.net
- http://dean.serenevy.net
+ dean@serenevy.net
 
 =head1 LICENSE
 

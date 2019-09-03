@@ -1,12 +1,22 @@
 
+This is a set of utility functions for the perl programming language that I
+find myself rewriting frequently. Normally, putting functions into a module
+introduces a dependency on that module which can be a hassle in some
+situations. This is a "smart" module which is capable of replacing the
+"use Dean::Util..." line with the code for the requested functions. Thus,
+machines that have Dean::Util installed can use it as a module, but when
+requested, a (Dean::Util) dependency-free version of the file may be made.
+
+
 INSTALLATION
 
 To install this module type the following:
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+    perl Build.PL
+    ./Build MANIFEST
+    ./Build
+    ./Build test
+    ./Build install
 
 
 DEPENDENCIES
@@ -15,27 +25,31 @@ Some of the functions in this module require other modules and libraries.
 In order to use all of the included functions, you should install the
 following modules. However, most functions will work without them.
 
-  Term::ReadKey
-  File::Temp        # part of the core distribution after Perl 5.6.1
-  XML::LibXML       # Only for the libxml specific functions
-  LWP::Simple       # Not used often
+    Term::ReadKey
+    XML::LibXML       # Only for the libxml specific functions
+    LWP::Simple       # Not used often
 
 
 DEBIAN
 
 This is a complete list of debian packages that provide the above modules:
 
-  libterm-readkey-perl
-  libxml-libxml-perl
-  libwww-perl             # for LWP::Simple
+    libterm-readkey-perl
+    libxml-libxml-perl
+    libwww-perl             # for LWP::Simple
 
 
-COPYRIGHT AND LICENCE
+LICENCE
 
-Copyright (c) 2005 Dean Serenevy. All rights reserved.
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
+This software (except where attributed to another author) is hereby placed
+into the public domain. If you use this code, a simple comment in the code
+giving credit and an email letting me know that you find it useful would be
+courteous but is not required.
 
-Dean Serenevy
-dean@serenevy.net
-http://dean.serenevy.net
+The software is provided "as is" without warranty of any kind, either
+expressed or implied including, but not limited to, the implied warranties
+of merchantability and fitness for a particular purpose. In no event shall
+the authors or copyright holders be liable for any claim, damages or other
+liability, whether in an action of contract, tort or otherwise, arising
+from, out of or in connection with the software or the use or other
+dealings in the software.
