@@ -235,6 +235,7 @@ sub insert_Dean_Util_functions {
     rename $file,   $file."~" or die "Error making backup of file $file: $!";
     open $IN,  "<", $file."~" or die "Error opening $file~ for reading: $!";
     open $OUT, ">", $file     or die "Error opening $file for writing: $!";
+    chmod( ((stat $IN)[2] & 07777), $OUT );
     while (local $_ = <$IN>) {
       unless (/^\s*use Dean::Util\b(.*)/) { print $OUT $_; next }
       my ($list, $include_pod) = ($1, 0);
@@ -279,6 +280,7 @@ sub upgrade_Dean_Util_functions {
     rename $file,   $file."~" or die "Error making backup of file $file: $!";
     open $IN,  "<", $file."~" or die "Error opening $file~ for reading: $!";
     open $OUT, ">", $file     or die "Error opening $file for writing: $!";
+    chmod( ((stat $IN)[2] & 07777), $OUT );
     my ($inblock, $useline, $version, @funcs);
     while ($_ = <$IN>) {
       if (/^# BEGIN(?>\s+)Dean::(?:Test)?Util code version ([\d.]+)/) {
@@ -353,6 +355,7 @@ sub remove_Dean_Util_functions {
     rename $file,   $file."~" or die "Error making backup of file $file: $!";
     open $IN,  "<", $file."~" or die "Error opening $file~ for reading: $!";
     open $OUT, ">", $file     or die "Error opening $file for writing: $!";
+    chmod( ((stat $IN)[2] & 07777), $OUT );
     my ($inblock, $useline, $version, @funcs);
     while ($_ = <$IN>) {
       if (/^# BEGIN(?>\s+)Dean::Util code version ([\d.]+)/) {
