@@ -476,6 +476,8 @@ sub get_Dean_Util_function_string {
 
 =head3 $pi
 
+See also: Math::Trig pi
+
 The string, pi, to 30 digits after the decimal.
 
 =cut
@@ -484,6 +486,8 @@ The string, pi, to 30 digits after the decimal.
 our $pi  = "3.141592653589793238462643383280";
 
 =head3 $tau
+
+See also: Math::Trig pi2
 
 The string, tau = 2*$pi, to 30 digits after the decimal.
 
@@ -513,6 +517,8 @@ our $sqrt2 = "1.414213562373095048801688724209";
 
 =head3 rad2deg
 
+See also: Math::Trig rad2deg
+
   my $deg = rad2deg( 0.32 )
   my $deg = 0.32 * rad2deg();
 
@@ -524,6 +530,8 @@ Convert radians to degrees
 sub rad2deg { return 180 * (shift // 1) / 3.141592653589793238462643383280 }
 
 =head3 deg2rad
+
+See also: Math::Trig deg2rad
 
   my $rad = deg2rad( 45 )
   my $rad = 45 * deg2rad();
@@ -871,6 +879,8 @@ See also: List::Util sum
 
 Returns the sum of all numeric entries in a list. Undefined/non-numeric values cause warnings.
 
+Unlike sum from List::Util, returns 0 if argument list is empty.
+
 =cut
 
 =head3 product
@@ -879,12 +889,16 @@ See also: List::Util reduce
 
 Returns the product of all numeric entries in a list. Undefined/non-numeric values cause warnings.
 
+Returns 1 if argument list is empty.
+
 =cut
 
 =head3 average
 
 Returns the average over all entries in a list. Undefined or non-numeric
 entries will spew warnings.
+
+Returns undef if argument list is empty.
 
 Uses an appropriately stable algorithm: http://www.nu42.com/2015/03/how-you-average-numbers.html
 
@@ -911,11 +925,15 @@ sub average {
 
 Returns the sum of all numeric entries in a list. Undefined/non-numeric values are ignored.
 
+Returns 0 if argument list is empty.
+
 =cut
 
 =head3 product_dirty
 
 Returns the product of all numeric entries in a list. Undefined/non-numeric values are ignored.
+
+Returns 1 if argument list is empty.
 
 =cut
 
@@ -923,6 +941,8 @@ Returns the product of all numeric entries in a list. Undefined/non-numeric valu
 
 Returns the average over all entries in a list. Undefined or non-numeric
 entries contribute a 0 to the average.
+
+Returns undef if argument list is empty.
 
 =cut
 
