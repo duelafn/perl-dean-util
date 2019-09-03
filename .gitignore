@@ -6,7 +6,6 @@
 /META.*
 /MYMETA.*
 /_build
+/_release
 /debbuild
 /dpkg
-Drafts.pm
-TestUtil.pm

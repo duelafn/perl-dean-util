@@ -1,4 +1,8 @@
 
+Dean::Util 1.084 released 2019-09-03
+    - *_Dean_Util_functions: preserve file permissions
+    - find: new -prune_tex option ignores auto-generated LaTeX files
+
 Dean::Util 1.083 released 2019-09-03
     - Version bump for public release (no code changes)
 
