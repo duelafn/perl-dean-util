@@ -1,5 +1,5 @@
 
-Dean::Util 1.083
+Dean::Util 1.083 released 2019-09-03
     - Version bump for public release (no code changes)
 
 Dean::Util 1.082 released 2017-04-01
