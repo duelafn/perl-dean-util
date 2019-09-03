@@ -1,0 +1,772 @@
+
+Dean::Util 1.082 released 2017-04-01
+    INCOMPATIBLE CHANGES:
+      * Require perl 5.14
+      * qbash - use /a modifier to avoid quoting simple strings
+
+    - mk_progressbar - fix off-by-one error which made group chunking irregular
+    - one_var - Ensure variance is not accidentally negative (due to unfortunate numerics)
+    - nonce - make n-character word nonce (:security)
+    - deep_diff - Print differences between two complex (possibly circular) data structures
+    - list - unwraps a single level of arrays
+    - perceptron - Linear learning algorithm method/object (:ai)
+    - deg2rad, rad2deg - angle conversion functions
+    - safe_pipe - new "debug" option to print executed command
+    - find - -prune_rcs ignores ".#*" lock/backup files
+    - hypot - generalize to l²-norm in arbitrary dimensions
+    - nicef - never return "-0"
+
+Dean::Util 1.081 released 2015-10-27
+    - hypot and leg: allow legs of length zero
+    - bash_complete: Prints strings appropriate for user-friendly bash completion.
+    - qbsbash: backslash-escape string for bash
+    - $tau: It's Tau! https://www.youtube.com/watch?v=FtxmFlMLYRI
+
+Dean::Util 1.080 released 2015-08-29
+    INCOMPATIBLE CHANGE:
+      * decode_english - Use and strip BOM if present; Reject cp1252 if yield control chars
+
+    - find - properly localize $_
+    - find - quiet "used once" warning
+    - hypot - use correct algorithm (compute without undue overflow)
+    - average - use a numerically stable algorithm
+    - safe_pipe - chomp option to chomp returned lines when called in list context
+    - leg($h, $a) - compute leg of triangle from hypot and leg without undue overflow
+
+Dean::Util 1.078 released 2015-02-11
+    - Fix some failing tests and "when is experimental" warnings found when
+    - upgrading to Debian Jessie (perl 5.20, but I think wanrings were added
+      in perl 5.16).
+
+Dean::Util 1.077 released 2014-12-14
+    - find - add ".#*" to -prune_backup pattern
+    - upgrade_Dean_Util_functions - accept options to:
+      - optionally force-replace even if versions match
+      - optionally downgrade code
+
+Dean::Util 1.076 released 2014-08-11
+    - find - do not throw error when top-level path does not exist
+
+Dean::Util 1.075 released 2014-08-02
+    - find - stat() caching in v1.072 was still flawed, fix and test
+
+Dean::Util 1.074 released 2014-08-02
+    - find - stat() caching in v1.072 was flawed (crashed on -type filters)
+
+Dean::Util 1.073 released 2014-08-01
+    - version bump to correct partially published version 1.072
+
+Dean::Util 1.072 released 2014-08-01
+    - format_cols - enumerate option will prefix values with a number
+    - find - Include stat() object in info hash since we have it anyway
+    - bytes2size, etc - PB were missing from all lists, all calculations using PB or larger were incorrect
+    - lex_sort - avoid recursion, add test with empty list
+
+Dean::Util 1.071 released 2013-09-07
+    - xml_attr - accept scalar references as key names (for boolean/valueless attributes)
+    - safe_pipe - accept arrayref of allowed (error) exit statuses
+    - POD updates
+
+Dean::Util 1.070 released 2013-07-13
+    - safe_pipe - more care in avoiding END{} blocks
+    - Exporting will include "use Carp;" if needed
+    - canonicalize_filename - New "ascii" pattern which should be pretty safe
+    - commify - Accept optional sprintf format as first parameter
+    - Update "Recommends" and "Suggests" in debian/control file
+    - nice_date, nice_time - companions to nice_datetime
+    - decode_first - decode string using first successful of a list of character encodings
+    - decode_english - ensure string is decoded, attempts UTF-8 then Windows-1252
+
+Dean::Util 1.069 released 2012-11-07
+    - safe_pipe - Added tests, should now catch child execution errors
+    - ctext - avoid uninitialized warning on modern perls
+    - size2bytes* - support exa, zetta, yotta
+    - do_as - improved error message if setting user or group ID fails
+    - qbash - use state variable for unprintable regex
+    - in_and_out - preserves file permissions when running on perl >= 5.12
+    - lastline - added seek() optimization for "large" files
+    - hypot - Euclidean distance function
+    - $sqrt2 - 1.414213562373095048801688724209
+
+Dean::Util 1.068 released 2012-08-10
+    - nicef, seconds2hms, bytes2size, bytes2size_SI, safe_pipe
+      - prevent potential format injections
+      - taint-mode safe
+    - pidof - Search /proc for programs matching the given name or options
+
+Dean::Util 1.067 released 2012-07-16
+    - sql_insert - warning when on_conflict is unset in perl 5.14
+    - untaint_int, untaint_num - perl 5.14 seems to taint length($tainted),
+      new subs to make life easier
+    - DEBUG INFO NOTICE WARNING ERR ERROR CRIT ALERT EMERG - logging functions
+
+Dean::Util 1.066 released 2012-04-26
+    - one_var - Fix problems with empty and size 1 data sets
+    - tests - disable ambiguous test for parse_date()
+    - one_var - compute standard error
+    - mk_progressbar - Add "dot" progress type
+    - sprint_one_var - print 1-line summaries of one_var() output
+
+Dean::Util 1.065 released 2012-03-07
+    - [parse_date] fix parsing of "Aug 2012" type dates
+    - Docs: more references (Set::Object, Text::Autoformat, IO::Prompt)
+    - [uri] add tests
+    - [parse_date] near pass-through of DateTime objects; expand tests
+    - [quotetex] escape < and >
+
+Dean::Util 1.064 released 2011-12-03
+    - pmap - Fix regression where results were not returned in original order, added tests
+    - tex2image - requires plain latex (no xelatex)
+    - state variables - reduce load time by using state vars
+    - fix incorrect test count in op.t by using done_testing()
+    - add tests for trim()
+
+Dean::Util 1.063 released 2011-11-08
+    POTENTIALLY INCOMPATIBLE CHANGE:
+      * safe_pipe - local $SIG{CHLD} = "IGNORE";
+
+    - text_sort - Unicode::Collate->new took 1s during startup! Build on demand
+    - canonpath - merge updates from File::Spec 3.31
+    - approx_date, nice_datetime - better date format
+
+Dean::Util 1.062 released 2011-10-01
+    INCOMPATIBLE CHANGE:
+      * use 5.010 - May use 5.010 features; remove say() function
+
+    - subhash - Extract just some keys from a hash.
+    - approx_date - loose dates when precision is excessive
+    - nice_datetime - Format a date-time in a nice format
+
+Dean::Util 1.061 released 2011-09-14
+    DEPRECATIONS: all :sql subs - DBIx::Simple replaces all sql_* functions
+       (won't remove sql_* for a long time)
+
+    - safe_pipe - remove call to close which may sometimes fail
+    - text_sort, text_sort_by - use Unicode::Collate for even better natural_sort
+    - xml_attr - Pass scalar refs through un-escaped (much like SQL::Abstract treats scalar refs)
+
+Dean::Util 1.060 released 2011-08-16
+    INCOMPATIBLE CHANGE:
+      is_the_orb - remove somewhat inappropriate function
+
+    - uri: copy arguments before modifying [ prevent modification of read-only
+      value error when bare strings passed as arguments ]
+
+Dean::Util 1.059 released 2011-08-02
+    INCOMPATIBLE CHANGES:
+      * safe_pipe - Raise error if command fails for some reason
+      * gcd - 20% speedup, results now always positive
+
+    - lcm - Least Common Multiple
+    - uri - Build and modify URIs
+    - format_cols - avoid warning from Term::ReadKey::GetTerminalSize
+    - parse_user_agent - Add warning about uselessness of this function
+    - Various Perl::Critic suggestions
+
+Dean::Util 1.058 released 2011-06-15
+    INCOMPATIBLE CHANGES:
+      * find - 4th argument is now a useful \%info hash not $File::Find::fullname
+      * parse_user_agent - tweaked, probably broken, definitely deprecated
+      * safe_pipe - make exec safer by using "exec PROGRAM LIST" syntax
+      * compile_latex - xelatex autodetection and default
+
+    - do_as - [unstable interface] Locally change the effective user id and
+      execute some code; will eventually include tricks to set up environment
+      (DISPLAY, DBUS_*, SSH_AGENT ...)
+    - hdefaults - like hpush, but does not overwrite existing keys
+    - unformat - conversion actions may now be Regexps
+    - $_re_color_escape - updated pattern
+    - commify - ignore (leading and) trailing text as in "(2345.21)"
+    - format_cols - new option: uninitialized => warn|die|ignore
+    - pmap - threads::shared implementation for 80% speedup
+    - find - document that -name accepts qr// regexps
+    - misc pointers to other modules
+
+Dean::Util 1.057 released 2011-02-25
+    - pascals_triangle - repair code which was completely broken
+    - commify - add (US) commas to signed floats
+    - parse_debian_control_format - Debian's simple has serialization
+    - xml_encode - replace <>"& with corresponding entities
+    - xml_attr - create XML attribute string from hash
+    - xml_tag - create XML tags
+    - xml_btag - create XML tags
+    - now  - improve docs; can create moments in floating time zone
+    - find - add -xdev option
+
+Dean::Util 1.056 released 2010-12-14
+    - INCOMPATIBLE CHANGE: qbash now accepts encoded UTF-8 as valid
+    - parse_date: accepts "floating" option to avoid setting time zone
+    - sql_insert: add debugging for HandleError
+                  Note: ON CLONFLICT is not really working
+
+Dean::Util 1.055 released 2010-11-12
+    INCOMPATIBLE CHANGES:
+      * exclude "say" from export :all
+      * info - define return value based on whether message was printed
+        (formerly return value was not defined)
+
+    - random_binomial   - return integer following a binomial distribution
+    - pascals_triangle  - return nth row of Pascal's triangle
+    - is_the_orb        - return true if system is currently connected to the orb
+    - deep_eq           - handle circular references
+    - difference        - Fix crash when first set is empty
+    - size2bytes, etc   - push up to yotta-bytes
+    - misc documentation updates
+
+Dean::Util 1.054 released 2010-06-30
+    - DEPRECATE say: perl 5.010 was released Dec 2007, time to move on
+    - subopts: Add validation
+    - mk_progressbar: spiffy progress bar for command line scripts
+    - pct_change: simple ($new-$orig)/$orig function
+    - use re "taint" (and 'no re "taint"' where needed)
+    - is_prime: initialize sieve to avoid warnings in next_prime
+
+Dean::Util 1.053 released 2010-04-17
+    - info: append newline if missing (adding \n is _so_ perl 5.8)
+    - pmap: faster and smarter CPU counting
+    - find: document -no_chdir, -untaint, and -untaint_pattern options
+    - touch: Perl::Critic: Fix variable declaration problem
+    - some minor Documentation fixes
+
+Dean::Util 1.052 released 2010-01-20
+    - pmap and pgrep parallelization tools
+
+Dean::Util 1.051 released 2010-01-10
+    - [compile_latex] generalize to auto-compile pdflatex and perltex documents
+    - [get_boolean] read from <STDIN> not <>
+    - Ribbit, better death: use croak where appropriate
+
+Dean::Util 1.050 released 2009-10-10
+    - misc speed improvements
+
+Dean::Util 1.049 released 2009-09-18
+    - find: -wanted arg like -exec but auto-sets File::Find::prune
+
+Dean::Util 1.048 released 2009-09-16
+    - find: improve documentation and pass file name in $_ to -exec sub
+
+Dean::Util 1.047 released 2009-07-25
+    - fix bug in nicef where 100 would reduce to 1
+
+Dean::Util 1.046 released 2009-06-15
+    - New function remove_Dean_Util_functions
+    - add untaint option to find()
+
+Dean::Util 1.045 released 2009-05-24
+    - safe_pipe now behaves more nicely in void context (directs output
+    - to STDERR so we can see everything - unless capture_err is set).
+
+Dean::Util 1.044 released 2009-04-07
+    - BUGFIX: find had eval but did not capture errors. Switched to "do"
+    - nicef: documentation improvement, default to 2 digits
+    - safe_pipe: can now also capture STDERR
+    - parse_date: remove dependency on zip
+    - debian: update for Lenny (new standards version...)
+    - in_and_out: Open file handles for text processing
+    - subopts: Parse subroutine options into an options hash
+
+Dean::Util 1.043 released 2009-02-16
+    - nicef: documentation improvement, default to 2 digits
+
+Dean::Util 1.042 released 2009-02-16
+    - safe_pipe can now also capture STDERR
+
+Dean::Util 1.041 released 2009-01-27
+    - ifix
+
+Dean::Util 1.040 released 2008-11-02
+    - Bug in find: Had eval but did not capture errors. Switched to "do"
+
+Dean::Util 1.039 released 2008-10-29
+    - fix a sign issue in round
+
+Dean::Util 1.038 released 2008-10-29
+    - Added rounding functions
+
+Dean::Util 1.037 released 2008-10-03
+    - New: sql_hash_multi
+    - Fix incorrect use of FetchHashKeyName
+    - More robust dbh->err and dbh->errstr error testing
+
+Dean::Util 1.036 released 2008-09-25
+    - Trial release of new :sql subs
+
+Dean::Util 1.035 released 2008-09-12
+    - new section :sql - added sql_insert function
+
+Dean::Util 1.034 released 2008-07-12
+    - some tweaks (size2bytes [and friends], unique_id, is_prime)
+    - NEW function bucketize
+    - DEPRECATED: size2bytes_SI bytes2size_SI size_sum_SI
+
+Dean::Util 1.033 released 2008-03-10
+    - unique: code actually matched documentation
+    - histogram: better handling of non-existant keys (0 occurrences)
+    - difference: speed improvement
+    - str2hash: Correct Perl6 adverbial form parsing
+    - NEW: rtf2txt (very simplistic -- only handles plain text well)
+    - NEW: modtime (epoch time when file was last modified)
+
+Dean::Util 1.032 released 2008-01-05
+    - sligntly more efficient cartesian implementation
+
+Dean::Util 1.031 released 2008-01-04
+    - str2hash finally properly handles , and => in quotes
+    - bu_open in list context returns file and its backup (for reading)
+
+Dean::Util 1.030 released 2008-01-01
+    - Added new SPLIT function
+    - repair nicef definition
+
+Dean::Util 1.029 released 2007-12-28
+    - min, max, ... function docs point to the List::Util equivalents
+    - fix error in SD computation (forgot square root)
+    - nicef : formats floating point numbers
+    - Add ".pc" (quilt) directory to list of RCS directories
+    - fix bug in find -quiet
+
+Dean::Util 1.028 released 2007-09-11
+    - Reduce load time from 0.12 to 0.07
+      (decrease "use" in favor of in-sub "require"s)
+
+Dean::Util 1.027 released 2007-08-11
+    - Should smartmatch x \in ARRAY tests
+
+Dean::Util 1.026 released 2007-08-11
+    - Added smartmatch function (laziness!)
+
+Dean::Util 1.025 released 2007-07-29
+    - NEW function: fmap
+
+Dean::Util 1.024 released 2007-07-25
+    - *_SI versions of size2bytes and friends
+
+Dean::Util 1.023 released 2007-07-25
+    - POD updates
+    - NEW function: dotprod
+    - length2pt reecognises "pt" unit of measure
+    - format_cols accepts new col_join option
+
+Dean::Util 1.022 released 2007-07-08
+    - New function length2pt
+
+Dean::Util 1.021 released 2007-06-25
+    - Fix touch command to not clobber existing files
+    - Fix newer command to properly match standard behavior
+
+Dean::Util 1.020 released 2007-06-05
+    - added ndiff to Dean::Util
+    - added more HOP things to Drafts
+
+Dean::Util 1.019 released 2007-06-01
+    - All file operations support \$mode option
+
+Dean::Util 1.018 released 2007-06-01
+    - rofh, wofh, ... allow IO or GLOB argument
+    - NOCOLOR function makes all color operations in namespace benign
+    - added "deref" operator to Drafts
+    - HAS, GETPATH, ... allow an array reference
+
+Dean::Util 1.017 released 2007-05-10
+    - fix format_cols some more
+
+Dean::Util 1.016 released 2007-05-09
+    - prob_model_invariants
+    - uri_rel2abs, uri_rel2abs_fast
+
+Dean::Util 1.014 released 2007-03-02
+    - Added Serenevy::Image::Mata.pm
+
+Dean::Util 1.013 released 2007-03-01
+    - NEW function FORK
+    - Fix bug in find() where RCS, backup, and hidden files were not pruned.
+
+Dean::Util 1.012 released 2007-02-14
+    - Adjust one_var to use the broken "Basic Math Course Method" of computing quartiles
+    - Fix up percentile to use a legitamate algorithm
+    - NEW command: correlation
+    - NEW command: natural_cmp (works like natural_sort)
+    - Fix maxdepth option in find
+    - move ps_* commands to Drafts.pm
+
+Dean::Util 1.011 released 2007-01-27
+    - Add a fill_last_column option to format_cols so that I can chop whitespace off the end of the last column.
+
+Dean::Util 1.010 released 2007-01-26
+    - find: prune_backup option, more patterns added to prune_rcs
+    - format_cols: align option
+    - NEW: rofh wofh rwfh rofhz wofhz rwfhz
+
+Dean::Util 1.009 released 2007-01-02
+    - format_cols: return undef when input array is empty or undefined
+
+Dean::Util 1.008 released 2006-12-22
+    - NEW Functions: is_prime sieve_of_eratosthenes next_prime
+    - format_cols uses new ls(1)-style formatting algorithm
+
+Dean::Util 1.007 released 2006-10-02
+    - New Function:  map_pairs (not to be confused with map_pair)
+
+Dean::Util 1.006 released 2006-09-26
+    - Upgrade HAS, EXISTS, TRUE, GETPATH, SETPATH:
+      Array refs are allowed if corresponding path components are numeric.
+
+Dean::Util 1.005 released 2006-09-16
+    - minor tweak to simple_range2list so that floating point ranges work better
+
+Dean::Util 1.004 released 2006-09-16
+    - NEW functions: now, hsl2rgb, rainbow
+    - plot_colors: loses some colors that were not sufficiently visually distinct
+    - parse_date: Add hack to recognise "2006:08:28 20:56:25" format from camera
+
+Dean::Util 1.003 released 2006-08-27
+    - NEW function: touch
+
+Dean::Util 1.002 released 2006-08-27
+    - s/return undef/return/g --- I was improperly returning undef, fixed now
+
+Dean::Util 1.001 released 2006-08-25
+    - NEW function gzdo
+    - minor documentation improvements
+
+Dean::Util 1.000 released 2006-08-14
+    - Version 1.0! ... finally have upgrade_Dean_Util_functions sub
+
+Dean::Util 0.71 released 2006-08-14
+    - insert_Dean_Util_functions inserts "use Dean::Util" line as a comment for upgrading
+
+Dean::Util 0.709 released 2006-08-14
+    - roll_dice accepts "5d8" notation for dice specifications
+    - Add missing "#BEGIN:" and "#END" tags
+
+Dean::Util 0.708 released 2006-08-05
+    - remove debugging output from &binary_search
+
+Dean::Util 0.707 released 2006-07-28
+    - Added binary_search list utility
+
+Dean::Util 0.706 released 2006-05-26
+    - Fix bug in ymd_hms: improper argument processing
+
+Dean::Util 0.705 released 2006-05-16
+    - Minor formatting fix
+
+Dean::Util 0.704 released 2006-04-26
+    - NEW function SPRINTF sprintf's hashes (using fancy format commands)
+
+Dean::Util 0.703 released 2006-04-15
+    - frac is now context-aware
+
+Dean::Util 0.702 released 2006-04-12
+    - NEW: Added some simple number-theoretic functions:
+      modular_inverse gcd extended_euclidean_algorithm frac
+    - NEW: wavelength2rgb (using linear approximations)
+
+Dean::Util 0.701 released 2006-04-01
+    - create custom canonpath that fixes xx/yy/../ -> xx/ problem
+
+Dean::Util 0.7 released 2006-03-27
+    - Add tests for fmax/fmin and maximizer/minimizers and found some edge cases to tweak
+    - :color_subs - learned about "unbold" (\e[22m) and friends these subs
+      now only cancel as much as necessary which allows for some amount of
+      nesting (of differing types, bf & color, ...)
+    - :color_strings - added $BOLD_OFF, ... also
+    - ps_header, ps_* !WORK IN PROGRESS (first draft, mostly documentation)
+    - REMOVE: cmpthese, was nonsense garbage
+    - LICENSE: now released to public domain
+
+Dean::Util 0.699 released 2006-03-13
+    - The realfile function is unnecessary, is now just a "link" to Cwd::realpath
+
+Dean::Util 0.698 released 2006-03-10
+    - new function "fgrep" to grep files
+
+Dean::Util 0.697 released 2006-03-09
+    - max_dirty & min_dirty are cleaner
+    - unformat: somewhat experimental unformatter (e.g., reverses sprintf)
+    - canonicalize_filename: now untaints result
+    - trim:
+      * move to :canonicalize from :untaint
+      * don't modify $_ when not in void context
+    - find improvements:
+      * -follow more like find(1)'s -follow
+      * new -follow_smart like File::Find's -follow
+      * -quiet to suppress Permission Denied warnings
+    - psplot_points: can override lineto and moveto
+    - untaint_file: return undef when input not defined
+    - put WARNING on cmpthese
+    - various minor documentation tweaks
+
+Dean::Util 0.696 released 2006-02-12
+    - Fix bug in glob2regexp so that Foo matches *Foo; improved documentation
+
+Dean::Util 0.695 released 2006-01-29
+    - Added several options to "find" function
+
+Dean::Util 0.694 released 2006-01-22
+    - More POD improvements
+
+Dean::Util 0.693 released 2006-01-22
+    - POD improvements (fixed links)
+
+Dean::Util 0.692 released 2006-01-21
+    - is_image_file forgot to force a . match at the beginning of the extension
+
+Dean::Util 0.691 released 2006-01-16
+    - Fix documentation for canonicalize_filename
+
+Dean::Util 0.69 released 2006-01-16
+    - Fix some errors and tests in canonicalize_filename
+
+Dean::Util 0.689 released 2006-01-16
+    - New function: canonicalize_filename
+
+Dean::Util 0.688 released 2005-12-06
+    - Added -type option to find
+    - Fix find to execute conditions in order
+    - TRUE, HAS, EXISTS, GETPATH, SETPATH: an undefined separator disables
+      separating (flat hashes)
+
+Dean::Util 0.687 released 2005-12-02
+    - Tweak check_Dean_Util_code regexp
+    - glob2regexp -- Groovy + TESTS!
+    - find -- File::Find using find(1) semantics
+
+Dean::Util 0.686 released 2005-11-28
+    - cmpthese: drop-in replacement for Benchmark that gives confidence intervals
+    - hpush: add keys to a hash easily
+
+Dean::Util 0.685 released 2005-10-12
+    - Fix bug in bu_open where I did not dereference a scalar ref.
+
+Dean::Util 0.684 released 2005-10-11
+    - Bug in histogram that allowed division by zero.
+
+Dean::Util 0.683 released 2005-10-03
+    - NEW COMMAND: parse_date (Hooray! parses with Date::Manip, returns DateTime)
+
+Dean::Util 0.682 released 2005-09-19
+    - Perl v5.8.1-RC3 seems to have a bug in parsing:
+        print $OUT foobar( 3 );
+      Had to replace with:
+        print $OUT +foobar( 3 );
+
+Dean::Util 0.681 released 2005-09-18
+    - NEW: EXISTS, HAS, TRUE, GETPATH, SETPATH
+    - Started: realfile (symbolic link dereferencer
+    - MOD: & no longer needed for package subs, removed all unnecessary &s
+
+Dean::Util 0.68 released 2005-09-05
+    - Added span="js_toggle" to js_toggle generated spans.
+
+Dean::Util 0.679 released 2005-09-05
+    - Use Carp in several places
+    - Had a space in js_toggle output that should not have been present
+
+Dean::Util 0.678 released 2005-09-01
+    - Needed a precision option for epsplot_linear_forms (parallel lines are /hard/)
+
+Dean::Util 0.677 released 2005-08-23
+    - new js_toggle function, quite handy
+
+Dean::Util 0.676 released 2005-08-20
+    - Allow plain scalars in simple_range2list
+
+Dean::Util 0.675 released 2005-08-20
+    - Added simple_range2list
+
+Dean::Util 0.674 released 2005-08-18
+    - epsplot_linear_forms: use scaling trick so lines all have same width
+
+Dean::Util 0.673 released 2005-08-13
+    - NEW: natural_sort - sort strings with numbers naturally
+
+Dean::Util 0.672 released 2005-07-21
+    - Commit for debian (eps_linear_forms, some partial functions, and bugfixes)
+
+Dean::Util 0.671 released 2005-07-04
+    - New function: cartesian
+
+Dean::Util 0.67 released 2005-06-26
+    - Fix a mistake in epsplot_linear_forms.
+
+Dean::Util 0.669 released 2005-06-26
+    - Fix bug in check_Dean_Util_functions that alloewd dependencies to be missed
+    - NEW function: epsplot_linear_forms for plotting polynomial matrices 
+
+Dean::Util 0.668 released 2005-06-24
+    - Add new "transposed" function to :list, transposes first two columns
+
+Dean::Util 0.667 released 2005-06-23
+    - fprint* and bu_open functions accept a MODE parameter to allow open ">:utf8".
+
+Dean::Util 0.666 released 2005-06-13
+    - the "str" function now forces string context on its argument when defined
+
+Dean::Util 0.665 released 2005-06-12
+    - "say" prints "$_\n" if no arguments are provided.
+
+Dean::Util 0.664 released 2005-06-10
+    - seconds2human understands fractional seconds
+    - partially completed gnuplot_histogram
+    - adjustments to "say" to make it more proper
+
+Dean::Util 0.663 released 2005-05-13
+    - NEW FUNCTIONS: flatten, get_boolean, Yn, yN, Tf, tF, yn, tf
+
+Dean::Util 0.662 released 2005-05-11
+    - ADDED: union, intersetion, difference
+
+Dean::Util 0.661 released 2005-05-05
+    - Speed improvement and fix join_multi / join_pair in empty list case
+
+Dean::Util 0.66 released 2005-05-03
+    - Further modifications to make perl 5.6 happy
+
+Dean::Util 0.659 released 2005-05-03
+    - sign and nsign returned "-" for zero (confused perl 5.6)
+
+Dean::Util 0.658 released 2005-05-03
+    - no warnings to prevent complaint in perl 5.6
+
+Dean::Util 0.657 released 2005-04-19
+    - UPDATE: unique, handle unique(@x) when @x == 0
+
+Dean::Util 0.656 released 2005-04-16
+    - ADD: uniq to :perl6 category
+
+Dean::Util 0.655 released 2005-04-02
+    - Added loan_payment formula
+
+Dean::Util 0.654 released 2005-04-02
+    - Modifications to compounding calculators
+    - Added savings_plan formula
+
+Dean::Util 0.653 released 2005-04-01
+    - NEW: continuous_compounding discrete_compounding
+
+Dean::Util 0.652 released 2005-03-27
+    - say now behaves properly when $, is used
+
+Dean::Util 0.651 released 2005-03-21
+    - remove "PM" from $_re_image_ext
+
+Dean::Util 0.65 released 2005-03-19
+    - missed a bug in fincrement
+
+Dean::Util 0.649 released 2005-03-19
+    - fincrement performs a flock before working with the file
+
+Dean::Util 0.648 released 2005-03-19
+    - improve fincrement to allow custom change values and to create file if non-existant
+
+Dean::Util 0.647 released 2005-03-18
+    - Update TODO comment
+
+Dean::Util 0.646 released 2005-03-16
+    - Update SYSTEM, QX, and EXEC to accept \"DEBUG" as first parameter to
+      print command before executing
+    - qbash doesn't put ' ' around simple parameters for pretty printing
+
+Dean::Util 0.645 released 2005-02-06
+    - qbash now checks for unicode-enabled perl and uses appropriate regexp
+
+Dean::Util 0.644 released 2005-01-30
+    - RENAME: %month -> %as_month
+    - NEW:    %as_month_number
+
+Dean::Util 0.643 released 2005-01-26
+    - Speed boost to "unique"
+
+Dean::Util 0.642 released 2005-01-24
+    - Misc (minor) improvements to human2seconds
+
+Dean::Util 0.641 released 2005-01-16
+    - NEW: catfile - from File::Spec
+
+Dean::Util 0.64 released 2005-01-15
+    - NEW function: SELECT - selects default output stram by string.
+    - whitespace cleanup in other functions
+
+Dean::Util 0.639 released 2004-12-17
+    - Color subs verify definedness of parameters (now act like "str")
+
+Dean::Util 0.638 released 2004-12-15
+    - Added a bunch of tests just for fun (Devel::Cover! woo hoo!)
+         (including some tests for the actual utility functions!)
+    - Finally added "_dirty" documentation
+    - improved token parsing when extracting code from Module
+
+Dean::Util 0.637
+    - Move to a real package with debian files and all
+    - TEST: unique_id
+    - Image patterns: $_re_image_ext is_image_file
+    - EXEC: to match SYSTEM and QX
+    - unique_id: less portable form of the Sys::UniqueID package
+    - UPD: human2seconds: works on plain numbers (assumes "seconds")
+    - UPD: format_cols: a new max_width option
+    - UPD: prompt: a new no_echo option (for passwords) improved Regexp
+               matching of input
+    - UPD: quotetex: EXPERIMENTAL support for preformatted text
+    - UPD: tex2image: localize $, and $\; allow #RRGGBB hex colors
+
+Dean::Util 0.614
+    - NEW: seconds2time
+    - TESTS: seconds2time, human2seconds
+    - UPDATE: suggestion_sort
+    - UPDATE: human2seconds (now understands times such as, 2:15 PM)
+    - BUGFIX: ymd
+
+Dean::Util 0.609
+    - clprint (POD and code improvement, can now specify output handle)
+
+Dean::Util 0.606
+    - checks for unused depends (led to some cruft cleanup)
+    - NEW: stringify
+    - TESTS: stringify, factorial
+    - FIX: factorial (now integers only), permutations, k_arrangements,
+               arrangements, k_combinations, combinations
+
+Dean::Util 0.604
+    - NEW: like_array, like_hash, like_scalar, libxml_doc
+    - FIX BUGS IN: clength
+    - added some tests to numerical.t
+    - all "use Foo" commands wrapped in "eval unless in %INC if needed" blocks
+
+Dean::Util 0.6
+    - check_Dean_Util_functions: verify existance of objects in @EXPORT_OK
+    - max min fmax fmin minimizer maximizer ceil floor sum product average _max max_min:
+          Removed dependance on is_num and strip_space for speed reasons.
+          Added a corresponding *_dirty method for each one which does is_num tests.
+    - tex2image: convert_args now prefers list of strings rather than single string.
+
+Dean::Util 0.598
+    - NEW: npdf, ncdf, unique, lex_sort
+    - TESTS: fmin, fmax, minimizer, maximizer, randomize, lex_sort
+    - NEW: $pi, $e
+    - REMOVED (poorly named): max_func, min_func
+    - REMOVED (impossible!): is_intc, is_numc, is_floatc, is_wordc
+    - IMPROVED: randomize (faster, O(n) < O(n^2))
+    - IMPROVED: compile_latex, tex2image (make use of SYSTEM and QX)
+
+Dean::Util 0.593
+    - QX (like SYSTEM but returns STDOUT)
+
+Dean::Util 0.592
+    - Fix bug in SYSTEM to allow objects to be shell escaped
+
+Dean::Util 0.591
+    - qbash: unicode is not suppored on jhegaala yet, modified regexp.
+
+Dean::Util 0.589
+    - qbash (escaping for sending to bash shell)
+    - SYSTEM (upgrade to core system command)
+
+Dean::Util 0.589
+    - BUGFIX: order of operation errir in text_justify and text_wrap
+    - suggestion_sort
+    - %months
+    - documentation updates
+
+Dean::Util 0.587
+    - initial upload
