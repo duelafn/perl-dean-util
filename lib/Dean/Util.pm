@@ -1390,6 +1390,7 @@ sub decimal2base {
   my $precision = (@_ > 1) ? pop : 0.0000000000001;
   return unless @_ and defined $n and defined $_[0];
   my %base = %{base_hash($_[0])};
+  return $base{0} if $n == 0;
   my ($int,$comma,$base,$res,$p,$inv_base);
   { no warnings;
     for (qw/. , : ; _ | \/ \\ - + ' ` "/) { unless (exists $base{$_}) { $comma = $_; last } }

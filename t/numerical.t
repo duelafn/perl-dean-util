@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 173;
+use Test::More tests => 174;
 BEGIN { use_ok 'Dean::Util', qw/:numerical/ }
 
 #-----------------------------------------------------------------
@@ -335,6 +335,7 @@ is( next_prime(500), 503, "next_prime 6" );
 
 =cut
 
+is( base2base("0", 2, 10),                                   0, "base2base 0" );
 is( base2base("01101101", 2, 10),                          109, "base2base 1" );
 is( base2base("2aef", [0..9,qw/a b c d e f/], 10), hex("2aef"), "base2base 2" );
 is( base2base("2aef", "0123456789abcdef", 10),     hex("2aef"), "base2base 3" );
