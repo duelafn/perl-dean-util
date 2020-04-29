@@ -2,12 +2,99 @@
 use strict;
 use warnings;
 
+use File::Glob qw/ bsd_glob /;
+use File::Temp;
+use File::stat;
 use Test::More;
+
 use Dean::Util qw/:file/;
 
 #-----------------------------------------------------------------
 #                     :file - File Operations
 #-----------------------------------------------------------------
+
+
+=head2 sed
+
+=cut
+
+{
+    my $tmpdir = File::Temp->newdir();
+    my $CONTENT = '#
+# You can also edit it by hand, if you so choose.
+
+DAY="6"
+';
+    my $CONTENT2 = '#
+# You can also edit it by hand, if you so choose.
+
+DAY="7"
+';
+    my $CONTENT3 = '1. #
+2. # You can also edit it by hand, if you so choose.
+3. 
+4. DAY="6"
+';
+
+    my $file = "$tmpdir/A";
+    fprint $file, $CONTENT;
+    my $time = time - 1000;
+    utime $time, $time, $file;
+    my $stat = stat($file);
+    ok 500 < (time - $stat->mtime()), "utime check";
+    ok !(sed { s/^MISSING/PLUGH/ } $file), "false on no match";
+    my $stat2 = stat($file);
+    is cat($file), $CONTENT, "no change leaves file as-is";
+    is $stat2->mtime, $stat->mtime, "does not modify mtime";
+    my @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 1";
+
+    ok +(sed { s/^DAY=\K.*/"7"/ } $file), "true on change";
+    $stat2 = stat($file);
+    is cat($file), $CONTENT2, "changed file";
+    ok $stat2->mtime > $stat->mtime, "modifies mtime";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 2";
+
+    ok !(sed { s/^DAY=\K.*/"7"/ } "$tmpdir/B", ignore_errors => 1), "false on error";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 3";
+
+    fprint $file, $CONTENT;
+    sed { s/^DAY=\K.*/"7"/ } $file, backup => ".bup";
+    ok -f "$file.bup", "Backup created";
+    is cat($file), $CONTENT2, "changed file";
+    is cat("$file.bup"), $CONTENT, "backup unchanged";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 2, "Only one new file created";
+    unlink "$file.bup";
+
+    fprint $file, $CONTENT;
+    sed { /^DAY/ ? qq[DAY="7"\n] : $_ } $file, returns => 1;
+    is cat($file), $CONTENT2, "changed file";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 4";
+
+    fprint $file, $CONTENT;
+    my $nonempty = 0;
+    sed { $nonempty++ if /^\S/ } $file;
+    is $nonempty, 3, "called once per line";
+    is cat($file), $CONTENT, "file unchanged";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 5";
+
+    fprint $file, $CONTENT;
+    $nonempty = 0;
+    sed { $nonempty++ if /^\S/; s/^DAY=\K.*/"7"/m } $file, whole_file => 1;
+    is $nonempty, 1, "called once per file";
+    is cat($file), $CONTENT2, "changed file";
+    @files = bsd_glob("$tmpdir/*");
+    is 0+@files, 1, "No new files created 6";
+
+    fprint $file, $CONTENT;
+    sed { "$.. $_" } $file, returns => 1;
+    is cat($file), $CONTENT3, "\$. works";
+}
 
 
 =head2 find

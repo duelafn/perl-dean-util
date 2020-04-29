@@ -1504,8 +1504,8 @@ package Perceptron {
     sub learn {
         my ($self, $d, $x) = @_;
         my $y = $self->compute($x);
-        $$self{weights}[-1] = $$self{weights}[-1] + ($d - $y);
-        $$self{weights}[$_] = $$self{weights}[$_] + ($d - $y) * $$x[$_] for 0..($#{$$self{weights}} - 1);
+        $$self{weights}[-1] += ($d - $y);
+        $$self{weights}[$_] += ($d - $y) * $$x[$_] for 0..($#{$$self{weights}} - 1);
         return $self;
     }
 
@@ -5811,7 +5811,7 @@ standard SI prefixes (K = 1000, M = 1000000, ...).
                          $EXPORT_TAGS{file}
                                  =
 [qw/newer lastline fprint fprint_bu fappend fincrement cat bcat
-    rofh wofh rwfh rofhz wofhz rwfhz in_and_out
+    rofh wofh rwfh rofhz wofhz rwfhz in_and_out sed sync
     bu_open catfile realfile find fmap fgrep canonpath touch/];
 #-----------------------------------------------------------------
 
@@ -6269,6 +6269,120 @@ sub fgrep(&@) {
   }
 }
 #END: fgrep
+
+
+=head3 sed
+
+  sed { CODE } $file, %options
+
+=over 4
+
+=item backup
+
+Save a backup and append this tring to it. DEFAULTS TO NO BACKUP!
+
+=item ignore_errors
+
+If there are errors reading the file, just ignore them and don't process
+anything.
+
+=item whole_file
+
+When true, the function is called ony one with the whole file passed in.
+
+=item returns
+
+When true, the function return value will be used, not the result in $_.
+
+=item temp =E<gt> '.tmp'
+
+Temporary file extension. This file is written and then renamed to the
+original file name. Set to emtpy string to live dangerously and modify the
+file in-place.
+
+=item sync =E<gt> 1
+
+When true, call sync(1) between dangerous operations.
+
+=back
+
+=cut
+
+#BEGIN: sed, DEPENDS: sync
+sub sed(&@) {
+    my ($func, $file, %opt) = @_;
+    $opt{temp} = '.tmp' unless exists($opt{temp});
+
+    my ($orig, $new, $F);
+    unless (open $F, "<", "$file") {
+        return if $opt{ignore_errors};
+        die "Error reading $file: $!";
+    }
+
+    local $_;
+    if ($opt{whole_file}) {
+        { local $/; $orig = <$F>; }
+        $_ = $orig;
+        $new = $func->($_);
+        $new = $_ unless $opt{returns};
+    }
+    else {
+        my (@orig, @tmp);
+        while (defined($_ = <$F>)) {
+            push @orig, $_;
+            my $x = $func->($_);
+            $x = $_ unless $opt{returns};
+            push @tmp, $x if defined($x);
+        }
+        $orig = join "", @orig;
+        $new  = join "", @tmp;
+    }
+
+    close $F;
+    return if $new eq $orig;
+
+    if (length($opt{backup})) {
+        open my $F, ">", "$file$opt{backup}" or die "Error creating backup $file$opt{backup}: $!";
+        print $F $orig;
+        close $F;
+        sync() if $opt{sync} and not length($opt{temp});# Limit syncs
+    }
+
+    my $tmp = "$file$opt{temp}";
+    {
+        open my $F, ">", $tmp or die "Error writing $tmp: $!";
+        print $F $new;
+        close $F;
+        sync() if $opt{sync};
+    }
+
+    if ($tmp ne "$file") {
+        rename $tmp, "$file";
+        sync() if $opt{sync};
+    }
+
+    return 1;
+}
+#END: sed
+
+
+=head3 sync
+
+Calls sync(1)
+
+=cut
+
+#BEGIN: sync
+sub sync {
+    state $sync;
+    ($sync) = grep -e $_, qw# /usr/bin/sync /bin/sync # unless defined($sync);
+    if ($sync) { system $sync; }
+    else {
+        say STDERR "Can't locate bin/sync" unless defined($sync);
+        $sync = 0;
+    }
+}
+#END: sync
 
 
 =head3 find
