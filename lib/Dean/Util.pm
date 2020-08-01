@@ -12,7 +12,7 @@ use base "Exporter";
             /;
 
 $EXPORT_TAGS{_fake} = [qw/INCLUDE_POD POD_ONLY/];
-our $VERSION = '1.084';
+our $VERSION = '1.085';
 
 sub INCLUDE_POD { 1 };
 sub POD_ONLY    { 1 };

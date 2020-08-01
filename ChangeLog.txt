@@ -1,4 +1,9 @@
 
+Dean::Util 1.085 released 2020-08-01
+    - sed - new function for editing files
+    - sync - new function calls /usr/bin/sync
+    - base2base - fix "0" handling
+
 Dean::Util 1.084 released 2019-09-03
     - *_Dean_Util_functions: preserve file permissions
     - find: new -prune_tex option ignores auto-generated LaTeX files
