@@ -1,6 +1,7 @@
 package Dean::Util;
 ## no critic (ReusedNames, MismatchedOperators);
-use 5.014; use strict; use warnings; use Carp;
+use 5.020; use experimental 'signatures';
+use strict; use warnings; use Carp;
 use re 'taint';
 
 use vars qw(@ISA @EXPORT_OK @EXPORT %EXPORT_TAGS $VERSION);
@@ -617,9 +618,9 @@ non-numeric values, perl will issue warnings.
 =cut
 
 #BEGIN: fmax, 1 line
-sub fmax(&@) { local $_; my ($f,$x,$m) = shift; return unless @_; $x = $f->($_ = shift); for (@_) { $x=$m if $x < ($m=$f->($_)) } $x }
+sub fmax :prototype(&@) { local $_; my ($f,$x,$m) = shift; return unless @_; $x = $f->($_ = shift); for (@_) { $x=$m if $x < ($m=$f->($_)) } $x }
 #BEGIN: fmin, 1 line
-sub fmin(&@) { local $_; my ($f,$x,$m) = shift; return unless @_; $x = $f->($_ = shift); for (@_) { $x=$m if $x > ($m=$f->($_)) } $x }
+sub fmin :prototype(&@) { local $_; my ($f,$x,$m) = shift; return unless @_; $x = $f->($_ = shift); for (@_) { $x=$m if $x > ($m=$f->($_)) } $x }
 
 =head3 fmax_dirty
 
@@ -648,10 +649,10 @@ non-numeric values, they will be ignored.
 =cut
 
 #BEGIN: fmax_dirty, 2 lines; depends: is_num, strip_space
-sub fmax_dirty(&@) { local $_; my ($f, $x, $m) = shift; 1 while @_ and !is_num($x = strip_space($f->($_ = shift)));
+sub fmax_dirty :prototype(&@) { local $_; my ($f, $x, $m) = shift; 1 while @_ and !is_num($x = strip_space($f->($_ = shift)));
                      for (@_) { $x = $m if is_num($m = strip_space($f->($_))) and $m > $x } is_num($x) ? $x : undef }
 #BEGIN: fmin_dirty, 2 lines; depends: is_num, strip_space
-sub fmin_dirty(&@) { local $_; my ($f, $x, $m) = shift; 1 while @_ and !is_num($x = strip_space($f->($_ = shift)));
+sub fmin_dirty :prototype(&@) { local $_; my ($f, $x, $m) = shift; 1 while @_ and !is_num($x = strip_space($f->($_ = shift)));
                      for (@_) { $x = $m if is_num($m = strip_space($f->($_))) and $m < $x } is_num($x) ? $x : undef }
 
 =head3 minimizer
@@ -681,10 +682,10 @@ undefined or non-numeric values, perl will issue warnings.
 =cut
 
 #BEGIN: maximizer, 2 lines
-sub maximizer(&@) { local $_; my ($f,$x,$m,$y) = shift; return unless @_; $x = $f->($y = $_ = shift);
+sub maximizer :prototype(&@) { local $_; my ($f,$x,$m,$y) = shift; return unless @_; $x = $f->($y = $_ = shift);
                     for (@_) { if ($x < ($m = $f->($_))) { $x=$m; $y=$_ } } $y }
 #BEGIN: minimizer, 2 lines
-sub minimizer(&@) { local $_; my ($f,$x,$m,$y) = shift; return unless @_; $x = $f->($y = $_ = shift);
+sub minimizer :prototype(&@) { local $_; my ($f,$x,$m,$y) = shift; return unless @_; $x = $f->($y = $_ = shift);
                     for (@_) { if ($x > ($m = $f->($_))) { $x=$m; $y=$_ } } $y }
 
 =head3 minimizer_dirty
@@ -722,10 +723,10 @@ I<will> be passed to the subroutine as a normal element.
 =cut
 
 #BEGIN: maximizer_dirty, 2 lines; depends: is_num, strip_space
-sub maximizer_dirty(&@) { local $_; my ($f, $x, $m, $y) = shift; 1 while @_ and !is_num($x = strip_space($f->($y = $_ = shift)));
+sub maximizer_dirty :prototype(&@) { local $_; my ($f, $x, $m, $y) = shift; 1 while @_ and !is_num($x = strip_space($f->($y = $_ = shift)));
                     for(@_){ if (is_num($m = strip_space($f->($_))) and $m > $x) {$x=$m;$y=$_} } is_num($x) ? $y : undef }
 #BEGIN: minimizer_dirty, 2 lines; depends: is_num, strip_space
-sub minimizer_dirty(&@) { local $_; my ($f, $x, $m, $y) = shift; 1 while @_ and !is_num($x = strip_space($f->($y = $_ = shift)));
+sub minimizer_dirty :prototype(&@) { local $_; my ($f, $x, $m, $y) = shift; 1 while @_ and !is_num($x = strip_space($f->($y = $_ = shift)));
                     for(@_){ if (is_num($m = strip_space($f->($_))) and $m < $x) {$x=$m;$y=$_} } is_num($x) ? $y : undef }
 
 =head3 ceil($)
@@ -739,7 +740,7 @@ See also: POSIX::ceil   [identical functionality]
 =cut
 
 #BEGIN: ceil, 1 line
-sub ceil($) { my $x = shift; return ($x == int $x) ? $x : ($x > 0) ? int( $x+1 ) : int($x) }
+sub ceil :prototype($) { my $x = shift; return ($x == int $x) ? $x : ($x > 0) ? int( $x+1 ) : int($x) }
 
 =head3 ceil_dirty($)
 
@@ -750,7 +751,7 @@ return undef.
 =cut
 
 #BEGIN: ceil_dirty, 2 line; depends: is_num, strip_space
-sub ceil_dirty($) { my $x = strip_space(shift()); return unless defined $x and is_num($x);
+sub ceil_dirty :prototype($) { my $x = strip_space(shift()); return unless defined $x and is_num($x);
                     return ($x == int $x) ? $x : ($x > 0) ? int( $x+1 ) : int($x) }
 
 =head3 floor($)
@@ -764,7 +765,7 @@ See also: POSIX::floor   [identical functionality]
 =cut
 
 #BEGIN: floor, 1 line
-sub floor($) { my $x = shift; return ($x == int $x) ? $x : ($x > 0) ? int($x) : int($x - 1) }
+sub floor :prototype($) { my $x = shift; return ($x == int $x) ? $x : ($x > 0) ? int($x) : int($x - 1) }
 
 =head3 floor_dirty($)
 
@@ -774,7 +775,7 @@ than or equal to the given argument. Otherwise this function returns undef.
 =cut
 
 #BEGIN: floor_dirty, 2 line; depends: is_num, strip_space
-sub floor_dirty($) { my $x = strip_space(shift()); return unless defined $x and is_num($x);
+sub floor_dirty :prototype($) { my $x = strip_space(shift()); return unless defined $x and is_num($x);
                      return ($x == int $x) ? $x : ($x > 0) ? int($x) : int($x - 1) }
 
 =head3 round
@@ -2386,7 +2387,7 @@ Compute the dot product of two vectors
 =cut
 
 #BEGIN: dotprod
-sub dotprod(\@\@) {
+sub dotprod :prototype(\@\@) {
   Carp::croak("dotprod: Vectors must have same length ($#{$_[0]} != $#{$_[1]})") unless $#{$_[0]} == $#{$_[1]};
   my $p = 0;
   $p += $_[0][$_] * $_[1][$_] for 0..$#{$_[0]};
@@ -2545,7 +2546,7 @@ Examples:
 #BEGIN: ndiff
 { my $delta  = 0.00000095367431640625;
   my $ddelta = 0.0000019073486328125;
-  sub ndiff(&;@) {
+  sub ndiff :prototype(&;@) {
     my $f  = shift;
     my $df = sub { local $_; ($f->($_ = $_[0]+$delta) - $f->($_ = $_[0]-$delta)) / $ddelta };
     @_ ? $df->(@_) : $df;
@@ -2577,7 +2578,7 @@ for some x in the interval (a,b).
 =cut
 
 #BEGIN: Nintegrate
-sub Nintegrate(&@) {
+sub Nintegrate :prototype(&@) {
   local $_;
   my ($f, $A, $B, $n) = @_; $n ||= 1000; $n += 1 if $n % 2;
   my $h = ($B-$A)/$n;
@@ -2908,7 +2909,7 @@ search for a particular element, the following must be done:
 =cut
 
 #BEGIN: binary_search
-sub binary_search(&\@) {
+sub binary_search :prototype(&\@) {
   my ($f, $x) = @_;
   local $_;
   return 0   if &$f($_ = $$x[0]);
@@ -2975,7 +2976,7 @@ It also can not sort integers larger than 10^24 ≈ 2^83.
 =cut
 
 #BEGIN: text_sort_by
-sub text_sort_by(&@) {
+sub text_sort_by :prototype(&@) {
     require Unicode::Collate;
     require Encode;
 
@@ -3176,7 +3177,7 @@ that we finish in finite time.
 =cut
 
 #BEGIN: find_index
-sub find_index(&@) {
+sub find_index :prototype(&@) {
   local $_;
   my ($f, $A, $i, $n, $d) = @_;
   $i = 0      unless defined $i;
@@ -3197,7 +3198,7 @@ sub find_index(&@) {
 #   else         { while ($i >= $n) { return $i if &$f($a, $b = $$A[$i]); $a = $b; $i += $d } }
 
 #BEGIN: find_index_with_memory
-sub find_index_with_memory(&@) {
+sub find_index_with_memory :prototype(&@) {
   my ($f, $A, $i, $n, $d) = @_;
   $i = 0      unless defined $i;
   $n = $#{$A} unless defined $n;
@@ -3259,7 +3260,7 @@ to a position in C<@list>.
 =cut
 
 #BEGIN: first
-sub first(&@)     {
+sub first :prototype(&@)     {
   my $f = shift;
   if (ref $_[0] eq 'ARRAY') {
     if (@_ > 1) { for (@{$_[0]}[$_[1]..$#{$_[0]}]) { return $_ if &$f($_) } }
@@ -3270,7 +3271,7 @@ sub first(&@)     {
 #END: first
 
 #BEGIN: first_pos
-sub first_pos(&@) {
+sub first_pos :prototype(&@) {
   my $f = shift;
   if (ref $_[0] eq 'ARRAY') {
     if (@_ > 1) { for my $i ($_[1]..$#{$_[0]}) { return $i if &$f(local $_ = $_[0][$i]) } }
@@ -3304,7 +3305,7 @@ Also note that values are given as bound aliases, so they can also be
 =cut
 
 #BEGIN: bucketize
-sub bucketize(&@) {
+sub bucketize :prototype(&@) {
   my ($f,%h) = (shift);
   for (@_) { my ($key) = $f->($_); push @{$h{$key}}, $_ }
   return wantarray ? %h : \%h;
@@ -3327,7 +3328,7 @@ the second are those elements for which the function returned false.
 =cut
 
 #BEGIN: partition
-sub partition(&@) {
+sub partition :prototype(&@) {
   my ($f,@a,@b) = (shift);
   for (@_) { $f->($_) ? push(@a,$_) : push(@b,$_) }
   return (\@a, \@b)
@@ -3473,7 +3474,7 @@ sub lex_sort {
     local(*{$caller."::b"}) = \my $b;
     my ($rlex,$x);
 
-    $rlex = sub($$){
+    $rlex = sub :prototype($$){
         my ($A, $B) = @_;
         return @$A <=> @$B unless @$A and @$B;
         my $idx = 0;
@@ -3673,21 +3674,21 @@ way to call UNIVERSAL::isa)
 =cut
 
 #BEGIN: like_array
-sub like_array($) {
+sub like_array :prototype($) {
   require UNIVERSAL;
   UNIVERSAL::isa($_[0],'ARRAY');
 }
 #END: like_array
 
 #BEGIN: like_hash
-sub like_hash($) {
+sub like_hash :prototype($) {
   require UNIVERSAL;
   UNIVERSAL::isa($_[0],'HASH');
 }
 #END: like_hash
 
 #BEGIN: like_scalar
-sub like_scalar($) {
+sub like_scalar :prototype($) {
   require UNIVERSAL;
   UNIVERSAL::isa($_[0],'SCALAR');
 }
@@ -4831,7 +4832,7 @@ otherwise returns the empty string.
 =cut
 
 #BEGIN: str, 1 line
-sub str($) {(defined$_[0])?''.$_[0]:''}
+sub str :prototype($) {(defined$_[0])?''.$_[0]:''}
 
 =head3 replace_windows_characters
 
@@ -4867,7 +4868,7 @@ return the empty string.
 =cut
 
 #BEGIN: strip_space, 1 line
-sub strip_space($) {local $_=shift; defined || return ''; s/\s+//g; $_}
+sub strip_space :prototype($) {local $_=shift; defined || return ''; s/\s+//g; $_}
 
 =head3 sign($)
 
@@ -4882,9 +4883,9 @@ Returns "" or "-" depending on the sign of the argument.
 =cut
 
 #BEGIN: sign, 1 line
-sub sign($) { ($_[0] >= 0) ? '+' : '-' }
+sub sign :prototype($) { ($_[0] >= 0) ? '+' : '-' }
 #BEGIN: nsign, 1 line
-sub nsign($) { ($_[0] >= 0) ? '' : '-' }
+sub nsign :prototype($) { ($_[0] >= 0) ? '' : '-' }
 
 =head3 canonicalize_newlines
 
@@ -4962,7 +4963,7 @@ them yourself (and probably re-encode them before use).
 =cut
 
 #BEGIN: qbash
-sub qbash($) {
+sub qbash :prototype($) {
     state $unprintable = '[^\pL\pM\pN\pP\pS\pZ[:print:]\s]';
     require Encode;
     local $_ = shift;
@@ -5001,7 +5002,7 @@ them yourself (and probably re-encode them before use).
 =cut
 
 #BEGIN: qbsbash
-sub qbsbash($) {
+sub qbsbash :prototype($) {
     state $unprintable = '[^\pL\pM\pN\pP\pS\pZ[:print:]\s]';
     state $quotable    = '[^\w\-\+\.\/]';
     require Encode;
@@ -6169,7 +6170,7 @@ is treated as the backup file name ((E.g., 'old_foo'). The default is '~'.
 =cut
 
 #BEGIN: fmap
-sub fmap(&@) {
+sub fmap :prototype(&@) {
   my ($f, %res, $count) = (shift);
   my %o = ( if_mode => '<', of_mode => '>', backup => '~', ((ref($_[0]) eq "HASH") ? %{shift()} : ()) );
   local $_;
@@ -6245,7 +6246,7 @@ subroutine block it will be taken as the file mode (the default is simply
 =cut
 
 #BEGIN: fgrep
-sub fgrep(&@) {
+sub fgrep :prototype(&@) {
   my ($f, @res, $count) = (shift);
   my $mode = (ref($_[0]) eq "SCALAR") ? ${shift()} : "<";
   local $_;
@@ -6309,7 +6310,7 @@ When true, call sync(1) between dangerous operations.
 =cut
 
 #BEGIN: sed, DEPENDS: sync
-sub sed(&@) {
+sub sed :prototype(&@) {
     my ($func, $file, %opt) = @_;
     $opt{temp} = '.tmp' unless exists($opt{temp});
 
@@ -7420,7 +7421,7 @@ SCALARS affected:
     no strict 'refs';
     my $pkg = @_ ? shift : caller;
     for (@$subs) {
-      *{$pkg."::$_"} = sub($) { $_[0] } if defined(*{$pkg."::$_"}{CODE}) and '$' eq prototype(\&{$pkg."::$_"});
+      *{$pkg."::$_"} = sub :prototype($) { $_[0] } if defined(*{$pkg."::$_"}{CODE}) and '$' eq prototype(\&{$pkg."::$_"});
     }
     for (@$scalars) {
       my $name = substr($_, 1);
@@ -7760,7 +7761,7 @@ Make text bold
 =cut
 
 #BEGIN: BOLD, 1 line
-sub BOLD($) { my $x = shift; (defined $x and $x ne '') ? "\e[1m".$x."\e[22m" : '' }
+sub BOLD :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[1m".$x."\e[22m" : '' }
 
 =head3 DARK($)
 
@@ -7769,7 +7770,7 @@ Make text dark
 =cut
 
 #BEGIN: DARK, 1 line
-sub DARK($) { my $x = shift; (defined $x and $x ne '') ? "\e[2m".$x."\e[22m" : '' }
+sub DARK :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[2m".$x."\e[22m" : '' }
 
 =head3 UNDERLINE($)
 
@@ -7778,7 +7779,7 @@ Make text underline
 =cut
 
 #BEGIN: UNDERLINE, 1 line
-sub UNDERLINE($) { my $x = shift; (defined $x and $x ne '') ? "\e[4m".$x."\e[24m" : '' }
+sub UNDERLINE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[4m".$x."\e[24m" : '' }
 
 =head3 BLINK($)
 
@@ -7787,7 +7788,7 @@ Make text blink
 =cut
 
 #BEGIN: BLINK, 1 line
-sub BLINK($) { my $x = shift; (defined $x and $x ne '') ? "\e[5m".$x."\e[25m" : '' }
+sub BLINK :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[5m".$x."\e[25m" : '' }
 
 =head3 REVERSE($)
 
@@ -7796,7 +7797,7 @@ Make text reverse
 =cut
 
 #BEGIN: REVERSE, 1 line
-sub REVERSE($) { my $x = shift; (defined $x and $x ne '') ? "\e[7m".$x."\e[27m" : '' }
+sub REVERSE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[7m".$x."\e[27m" : '' }
 
 =head3 CONCEALED($)
 
@@ -7805,7 +7806,7 @@ Make text concealed
 =cut
 
 #BEGIN: CONCEALED, 1 line
-sub CONCEALED($) { my $x = shift; (defined $x and $x ne '') ? "\e[8m".$x."\e[28m" : '' }
+sub CONCEALED :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[8m".$x."\e[28m" : '' }
 
 =head3 STRIKE($)
 
@@ -7814,7 +7815,7 @@ Strike-through text (rarely implemented)
 =cut
 
 #BEGIN: STRIKE, 1 line
-sub STRIKE($) { my $x = shift; (defined $x and $x ne '') ? "\e[9m".$x."\e[29m" : '' }
+sub STRIKE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[9m".$x."\e[29m" : '' }
 
 =head3 BLACK($)
 
@@ -7823,7 +7824,7 @@ Make text black
 =cut
 
 #BEGIN: BLACK, 1 line
-sub BLACK($) { my $x = shift; (defined $x and $x ne '') ? "\e[30m".$x."\e[39m" : '' }
+sub BLACK :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[30m".$x."\e[39m" : '' }
 
 =head3 RED($)
 
@@ -7832,7 +7833,7 @@ Make text red
 =cut
 
 #BEGIN: RED, 1 line
-sub RED($) { my $x = shift; (defined $x and $x ne '') ? "\e[31m".$x."\e[39m" : '' }
+sub RED :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[31m".$x."\e[39m" : '' }
 
 =head3 GREEN($)
 
@@ -7841,7 +7842,7 @@ Make text green
 =cut
 
 #BEGIN: GREEN, 1 line
-sub GREEN($) { my $x = shift; (defined $x and $x ne '') ? "\e[32m".$x."\e[39m" : '' }
+sub GREEN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[32m".$x."\e[39m" : '' }
 
 =head3 YELLOW($)
 
@@ -7850,7 +7851,7 @@ Make text yellow
 =cut
 
 #BEGIN: YELLOW, 1 line
-sub YELLOW($) { my $x = shift; (defined $x and $x ne '') ? "\e[33m".$x."\e[39m" : '' }
+sub YELLOW :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[33m".$x."\e[39m" : '' }
 
 =head3 BLUE($)
 
@@ -7859,7 +7860,7 @@ Make text blue
 =cut
 
 #BEGIN: BLUE, 1 line
-sub BLUE($) { my $x = shift; (defined $x and $x ne '') ? "\e[34m".$x."\e[39m" : '' }
+sub BLUE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[34m".$x."\e[39m" : '' }
 
 =head3 MAGENTA($)
 
@@ -7868,7 +7869,7 @@ Make text magenta
 =cut
 
 #BEGIN: MAGENTA, 1 line
-sub MAGENTA($) { my $x = shift; (defined $x and $x ne '') ? "\e[35m".$x."\e[39m" : '' }
+sub MAGENTA :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[35m".$x."\e[39m" : '' }
 
 =head3 CYAN($)
 
@@ -7877,7 +7878,7 @@ Make text cyan
 =cut
 
 #BEGIN: CYAN, 1 line
-sub CYAN($) { my $x = shift; (defined $x and $x ne '') ? "\e[36m".$x."\e[39m" : '' }
+sub CYAN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[36m".$x."\e[39m" : '' }
 
 =head3 WHITE($)
 
@@ -7886,7 +7887,7 @@ Make text white
 =cut
 
 #BEGIN: WHITE, 1 line
-sub WHITE($) { my $x = shift; (defined $x and $x ne '') ? "\e[37m".$x."\e[39m" : '' }
+sub WHITE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[37m".$x."\e[39m" : '' }
 
 =head3 GREY($)
 
@@ -7895,7 +7896,7 @@ Make text grey
 =cut
 
 #BEGIN: GREY, 1 line
-sub GREY($) { my $x = shift; (defined $x and $x ne '') ? "\e[90m".$x."\e[39m" : '' }
+sub GREY :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[90m".$x."\e[39m" : '' }
 
 =head3 GRAY($)
 
@@ -7904,7 +7905,7 @@ Make text gray
 =cut
 
 #BEGIN: GRAY, 1 line
-sub GRAY($) { my $x = shift; (defined $x and $x ne '') ? "\e[90m".$x."\e[39m" : '' }
+sub GRAY :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[90m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_RED($)
 
@@ -7913,7 +7914,7 @@ Make text bright_red
 =cut
 
 #BEGIN: BRIGHT_RED, 1 line
-sub BRIGHT_RED($) { my $x = shift; (defined $x and $x ne '') ? "\e[91m".$x."\e[39m" : '' }
+sub BRIGHT_RED :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[91m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_GREEN($)
 
@@ -7922,7 +7923,7 @@ Make text bright_green
 =cut
 
 #BEGIN: BRIGHT_GREEN, 1 line
-sub BRIGHT_GREEN($) { my $x = shift; (defined $x and $x ne '') ? "\e[92m".$x."\e[39m" : '' }
+sub BRIGHT_GREEN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[92m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_YELLOW($)
 
@@ -7931,7 +7932,7 @@ Make text bright_yellow
 =cut
 
 #BEGIN: BRIGHT_YELLOW, 1 line
-sub BRIGHT_YELLOW($) { my $x = shift; (defined $x and $x ne '') ? "\e[93m".$x."\e[39m" : '' }
+sub BRIGHT_YELLOW :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[93m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_BLUE($)
 
@@ -7940,7 +7941,7 @@ Make text bright_blue
 =cut
 
 #BEGIN: BRIGHT_BLUE, 1 line
-sub BRIGHT_BLUE($) { my $x = shift; (defined $x and $x ne '') ? "\e[94m".$x."\e[39m" : '' }
+sub BRIGHT_BLUE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[94m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_MAGENTA($)
 
@@ -7949,7 +7950,7 @@ Make text bright_magenta
 =cut
 
 #BEGIN: BRIGHT_MAGENTA, 1 line
-sub BRIGHT_MAGENTA($) { my $x = shift; (defined $x and $x ne '') ? "\e[95m".$x."\e[39m" : '' }
+sub BRIGHT_MAGENTA :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[95m".$x."\e[39m" : '' }
 
 =head3 BRIGHT_CYAN($)
 
@@ -7958,7 +7959,7 @@ Make text bright_cyan
 =cut
 
 #BEGIN: BRIGHT_CYAN, 1 line
-sub BRIGHT_CYAN($) { my $x = shift; (defined $x and $x ne '') ? "\e[96m".$x."\e[39m" : '' }
+sub BRIGHT_CYAN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[96m".$x."\e[39m" : '' }
 
 =head3 ON_BLACK($)
 
@@ -7967,7 +7968,7 @@ Make text on_black
 =cut
 
 #BEGIN: ON_BLACK, 1 line
-sub ON_BLACK($) { my $x = shift; (defined $x and $x ne '') ? "\e[40m".$x."\e[49m" : '' }
+sub ON_BLACK :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[40m".$x."\e[49m" : '' }
 
 =head3 ON_RED($)
 
@@ -7976,7 +7977,7 @@ Make text on_red
 =cut
 
 #BEGIN: ON_RED, 1 line
-sub ON_RED($) { my $x = shift; (defined $x and $x ne '') ? "\e[41m".$x."\e[49m" : '' }
+sub ON_RED :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[41m".$x."\e[49m" : '' }
 
 =head3 ON_GREEN($)
 
@@ -7985,7 +7986,7 @@ Make text on_green
 =cut
 
 #BEGIN: ON_GREEN, 1 line
-sub ON_GREEN($) { my $x = shift; (defined $x and $x ne '') ? "\e[42m".$x."\e[49m" : '' }
+sub ON_GREEN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[42m".$x."\e[49m" : '' }
 
 =head3 ON_YELLOW($)
 
@@ -7994,7 +7995,7 @@ Make text on_yellow
 =cut
 
 #BEGIN: ON_YELLOW, 1 line
-sub ON_YELLOW($) { my $x = shift; (defined $x and $x ne '') ? "\e[43m".$x."\e[49m" : '' }
+sub ON_YELLOW :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[43m".$x."\e[49m" : '' }
 
 =head3 ON_BLUE($)
 
@@ -8003,7 +8004,7 @@ Make text on_blue
 =cut
 
 #BEGIN: ON_BLUE, 1 line
-sub ON_BLUE($) { my $x = shift; (defined $x and $x ne '') ? "\e[44m".$x."\e[49m" : '' }
+sub ON_BLUE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[44m".$x."\e[49m" : '' }
 
 =head3 ON_MAGENTA($)
 
@@ -8012,7 +8013,7 @@ Make text on_magenta
 =cut
 
 #BEGIN: ON_MAGENTA, 1 line
-sub ON_MAGENTA($) { my $x = shift; (defined $x and $x ne '') ? "\e[45m".$x."\e[49m" : '' }
+sub ON_MAGENTA :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[45m".$x."\e[49m" : '' }
 
 =head3 ON_CYAN($)
 
@@ -8021,7 +8022,7 @@ Make text on_cyan
 =cut
 
 #BEGIN: ON_CYAN, 1 line
-sub ON_CYAN($) { my $x = shift; (defined $x and $x ne '') ? "\e[46m".$x."\e[49m" : '' }
+sub ON_CYAN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[46m".$x."\e[49m" : '' }
 
 =head3 ON_WHITE($)
 
@@ -8030,7 +8031,7 @@ Make text on_white
 =cut
 
 #BEGIN: ON_WHITE, 1 line
-sub ON_WHITE($) { my $x = shift; (defined $x and $x ne '') ? "\e[47m".$x."\e[49m" : '' }
+sub ON_WHITE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[47m".$x."\e[49m" : '' }
 
 =head3 ON_GREY($)
 
@@ -8039,7 +8040,7 @@ Make text on_grey
 =cut
 
 #BEGIN: ON_GREY, 1 line
-sub ON_GREY($) { my $x = shift; (defined $x and $x ne '') ? "\e[100m".$x."\e[49m" : '' }
+sub ON_GREY :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[100m".$x."\e[49m" : '' }
 
 =head3 ON_GRAY($)
 
@@ -8048,7 +8049,7 @@ Make text on_gray
 =cut
 
 #BEGIN: ON_GRAY, 1 line
-sub ON_GRAY($) { my $x = shift; (defined $x and $x ne '') ? "\e[100m".$x."\e[49m" : '' }
+sub ON_GRAY :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[100m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_RED($)
 
@@ -8057,7 +8058,7 @@ Make text on_bright_red
 =cut
 
 #BEGIN: ON_BRIGHT_RED, 1 line
-sub ON_BRIGHT_RED($) { my $x = shift; (defined $x and $x ne '') ? "\e[101m".$x."\e[49m" : '' }
+sub ON_BRIGHT_RED :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[101m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_GREEN($)
 
@@ -8066,7 +8067,7 @@ Make text on_bright_green
 =cut
 
 #BEGIN: ON_BRIGHT_GREEN, 1 line
-sub ON_BRIGHT_GREEN($) { my $x = shift; (defined $x and $x ne '') ? "\e[102m".$x."\e[49m" : '' }
+sub ON_BRIGHT_GREEN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[102m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_YELLOW($)
 
@@ -8075,7 +8076,7 @@ Make text on_bright_yellow
 =cut
 
 #BEGIN: ON_BRIGHT_YELLOW, 1 line
-sub ON_BRIGHT_YELLOW($) { my $x = shift; (defined $x and $x ne '') ? "\e[103m".$x."\e[49m" : '' }
+sub ON_BRIGHT_YELLOW :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[103m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_BLUE($)
 
@@ -8084,7 +8085,7 @@ Make text on_bright_blue
 =cut
 
 #BEGIN: ON_BRIGHT_BLUE, 1 line
-sub ON_BRIGHT_BLUE($) { my $x = shift; (defined $x and $x ne '') ? "\e[104m".$x."\e[49m" : '' }
+sub ON_BRIGHT_BLUE :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[104m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_MAGENTA($)
 
@@ -8093,7 +8094,7 @@ Make text on_bright_magenta
 =cut
 
 #BEGIN: ON_BRIGHT_MAGENTA, 1 line
-sub ON_BRIGHT_MAGENTA($) { my $x = shift; (defined $x and $x ne '') ? "\e[105m".$x."\e[49m" : '' }
+sub ON_BRIGHT_MAGENTA :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[105m".$x."\e[49m" : '' }
 
 =head3 ON_BRIGHT_CYAN($)
 
@@ -8102,7 +8103,7 @@ Make text on_bright_cyan
 =cut
 
 #BEGIN: ON_BRIGHT_CYAN, 1 line
-sub ON_BRIGHT_CYAN($) { my $x = shift; (defined $x and $x ne '') ? "\e[106m".$x."\e[49m" : '' }
+sub ON_BRIGHT_CYAN :prototype($) { my $x = shift; (defined $x and $x ne '') ? "\e[106m".$x."\e[49m" : '' }
 
 
 #-----------------------------------------------------------------
@@ -11969,13 +11970,13 @@ Note: Is currently more restrictive than necessary. This will improve over time.
 =cut
 
 #BEGIN: untaint, 1 line
-sub untaint($) {no re 'taint'; ((defined$_[0])?$_[0]=~/(.*)/sm:'')[0]}
+sub untaint :prototype($) {no re 'taint'; ((defined$_[0])?$_[0]=~/(.*)/sm:'')[0]}
 #BEGIN: untaint_file, 1 line
-sub untaint_file($) {no re 'taint'; ((defined$_[0])?$_[0]=~m|^([\w\-\+\,\~\.\/]+)$|:undef)[0]}
+sub untaint_file :prototype($) {no re 'taint'; ((defined$_[0])?$_[0]=~m|^([\w\-\+\,\~\.\/]+)$|:undef)[0]}
 #BEGIN: untaint_int, 1 line
-sub untaint_int($) {no re 'taint'; return unless defined($_[0]) and $_[0] =~ /^([-+]?[0-9]+)$/; return 0 + $1 }
+sub untaint_int :prototype($) {no re 'taint'; return unless defined($_[0]) and $_[0] =~ /^([-+]?[0-9]+)$/; return 0 + $1 }
 #BEGIN: untaint_num, 1 line
-sub untaint_num($) {no re 'taint'; return unless defined($_[0]) and $_[0] =~ /^([-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+))$/; return 0 + $1 }
+sub untaint_num :prototype($) {no re 'taint'; return unless defined($_[0]) and $_[0] =~ /^([-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+))$/; return 0 + $1 }
 
 
 
@@ -12445,7 +12446,7 @@ $_Util::pmap::threads = sub {
   # OSF1|SunOS) psrinfo|grep -c on-line
 };
 %_Util::pmap::t_opts  = (stack_size => 16*4096);
-sub pmap(&@) {
+sub pmap :prototype(&@) {
   $_Util::pmap::threads = $_Util::pmap::threads->() || 1 if 'CODE' eq ref($_Util::pmap::threads);
   my $func = shift;
   my $keep_results = defined(wantarray);
@@ -12512,7 +12513,7 @@ ordered as if the grep were performed sequentially.
 =cut
 
 #BEGIN: pgrep, 1 line; depends: pmap
-sub pgrep(&@) { my $f = shift; pmap(sub { $f->($_) ? ($_) : () }, @_); }
+sub pgrep :prototype(&@) { my $f = shift; pmap(sub { $f->($_) ? ($_) : () }, @_); }
 
 
 =head3 subopts
@@ -12838,7 +12839,7 @@ Not sure how to fix it. Want:
 =cut
 
 #BEGIN: FORK
-sub FORK(&@) {
+sub FORK :prototype(&@) {
   my %o;
   if (@_ and (ref($_[0]) or $_[0] !~ /^(?:parent|child|error|ignore)$/i)) {
     $o{child} = shift;
@@ -12944,7 +12945,7 @@ overwritten.
 =cut
 
 #BEGIN: hpush
-sub hpush(\%@) {
+sub hpush :prototype(\%@) {
   my ($h,$k,$v) = (shift);
   $$h{$k} = $v while ($k, $v) = splice(@_, 0, 2);
 }
@@ -12961,7 +12962,7 @@ preserved.
 =cut
 
 #BEGIN: hdefaults
-sub hdefaults(\%@) {
+sub hdefaults :prototype(\%@) {
   my ($h,$k,$v) = (shift);
   $$h{$k} //= $v while ($k, $v) = splice(@_, 0, 2);
 }
@@ -13075,7 +13076,7 @@ void context. Therefore you are not a bad person if you do the following:
 
 #BEGIN: map_pairs
 #-----------------------------------------------------------------
-sub map_pairs(&@) {
+sub map_pairs :prototype(&@) {
   my $f = shift;
   my @res;
 
@@ -13121,7 +13122,7 @@ may take a single argument or use C<$_>. Some Examples:
 #BEGIN: map_pair
 #-----------------------------------------------------------------
 # map_pair { f } { g }, @x --> f(x1), g(x2), f(x3), ...
-sub map_pair(&&@) {
+sub map_pair :prototype(&&@) {
   my ($f, $g, @x) = @_; my @res; local $_; my $odd = @x % 2;
   while (my ($x, $y) = splice @x, 0, 2) {
     $_ = $x; push @res, $f->($_);
