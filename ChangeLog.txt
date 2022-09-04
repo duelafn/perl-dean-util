@@ -1,4 +1,9 @@
 
+Dean::Util 1.086 released 2022-09-04
+    INCOMPATIBLE CHANGES:
+      * Require perl 5.20, move to :prototype where needed
+    - Bugfix in list(), was not unwrapping
+
 Dean::Util 1.085 released 2020-08-01
     - sed - new function for editing files
     - sync - new function calls /usr/bin/sync
