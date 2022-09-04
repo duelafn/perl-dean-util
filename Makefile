@@ -1,4 +1,14 @@
 
+# Release:
+#   make version-bump
+#   edit ChangeLog.txt
+#   make dist
+#   make release
+#   VV=1.085
+#   git commit -am "Dean::Util $VV"
+#   git tag -s $VV
+#   git push ; git push $VV
+
 PKGNAME = Dean::Util
 DEBPKGNAME = libdean-util-perl
 PKG_VERSION = $(shell perl -Ilib -MDean::Util -E 'say $$Dean::Util::VERSION')
@@ -44,6 +54,8 @@ test:
 	prove -Ilib t
 
 version-bump:
+	touch Build.PL
+	rm -f MYMETA.* META.*
 	sed -i "/\$$VERSION = /cour \$$VERSION = '${NEW_VERSION}';" lib/Dean/Util.pm
 	grep -qE '^${PKGNAME} ${NEW_VERSION}( |$$)' ChangeLog.txt || perl -pi -E 'print "\n${PKGNAME} ${NEW_VERSION}", (/\S/?"\n":"") if 1 == $$.' ChangeLog.txt
 	dch -v ${NEW_VERSION}-1 --distribution unstable  "New release"

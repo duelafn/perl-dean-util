@@ -7,7 +7,7 @@ my $build = Module::Build->new(
         'Module::Build'  => 0,
     },
     requires => {
-        "perl" => '5.14.0'
+        "perl" => '5.20.0'
     },
     recommends => {
         "Color::Calc"    => 0,
