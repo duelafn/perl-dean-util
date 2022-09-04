@@ -6,8 +6,8 @@
 #   make release
 #   VV=1.085
 #   git commit -am "Dean::Util $VV"
-#   git tag -s $VV
-#   git push ; git push $VV
+#   git tag -s $VV -m "Dean::Util $VV"
+#   git push ; git push origin $VV
 
 PKGNAME = Dean::Util
 DEBPKGNAME = libdean-util-perl
