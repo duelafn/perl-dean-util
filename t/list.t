@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 32;
+use Test::More tests => 33;
 BEGIN { use_ok 'Dean::Util', qw/:list/ }
 
 
@@ -10,6 +10,10 @@ BEGIN { use_ok 'Dean::Util', qw/:list/ }
 #-----------------------------------------------------------------
 #                      :list - List Utilities
 #-----------------------------------------------------------------
+# list
+my @list = list([1, 2, [3, 4], 5]);
+is_deeply(\@list, [1, 2, [3, 4], 5], "list");
+
 # find_index
 is( (find_index { $_ < 3 } [0..10]),            0, "find_index 1" );
 is( (find_index { $_ > 3 } [0..10]),            4, "find_index 2" );

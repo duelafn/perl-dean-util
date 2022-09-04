@@ -2886,7 +2886,7 @@ values. Does not operate deeply (see flatten() for that).
 
 #BEGIN: list
 sub list {
-    return map (ref($_) eq 'ARRAY' ? @$_ : $_), grep defined($_), @_;
+    return map { (ref($_) eq 'ARRAY') ? @$_ : $_ } grep defined($_), @_;
 }
 #END: list
 
@@ -13052,7 +13052,7 @@ sub parse_date {
 
 =head3 map_pairs(&@)
 
-See also: List::MoreUtils pairwise or List::Util 1.33 pairmap
+See also: List::Util pairmap
 
 Applies a function passing two elements from the array at a time. That is,
 given a function C<&f> and a list of inputs, C<x1>, C<x2>, ..., this
