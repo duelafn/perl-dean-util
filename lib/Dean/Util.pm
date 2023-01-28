@@ -13036,7 +13036,7 @@ sub parse_date {
   local $_ = shift;
   my %opt = ( clone => 1, @_ );
   return unless defined;
-  return $opt{clone} ? $_->clone : $_ if eval { $_->DOES("DateTime") };
+  return $opt{clone} ? $_->clone : $_ if eval { ref($_) and $_->DOES("DateTime") };
 
   # Work around oddity in parsing of "Aug 2012":
   $_ = "1 $_" if /^\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d{4}\s*$/;
