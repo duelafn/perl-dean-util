@@ -796,7 +796,10 @@ too many digits.
 #BEGIN: round
 sub round {
   my ($value, $r) = @_;
-  return int($value + .5) unless $r;# shortcut the common case
+  unless ($r) { # shortcut the common case
+      return int($value - .5) if $value < 0;
+      return int($value + .5);
+  }
 
   $r = "$r";
   $r =~ s/0+$// if index($r,'.') >= 0;

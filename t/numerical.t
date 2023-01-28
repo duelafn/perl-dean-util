@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 174;
+use Test::More tests => 195;
 BEGIN { use_ok 'Dean::Util', qw/:numerical/ }
 
 #-----------------------------------------------------------------
@@ -125,6 +125,7 @@ is( floor_dirty(undef), undef, "floor_dirty undef" );
 
 =cut
 
+is( round(2.03,".02"),  "2.04", "round 0" );
 is( round(2.05,".02"),  "2.06", "round 1" );
 is( round(2.051,".02"), "2.06", "round 2" );
 is( round(2.049,".02"), "2.04", "round 3" );
@@ -143,10 +144,37 @@ is( round(45,"10"),      "50", "round 13" );
 is( round(45),           "45", "round 14" );
 is( round(46),           "46", "round 15" );
 is( round(46.3),         "46", "round 16" );
+# Check for banker's rounding:
 is( round(46.5),         "47", "round 17" );
 is( round(47.5),         "48", "round 18" );
 
-is( round(-0.001, .01), "0.00", "round 19" );
+is( round(0.001, .01), "0.00", "round 19" );
+
+# Negatives
+is( round(-2.03,".02"),  "-2.04", "round -0" );
+is( round(-2.05,".02"),  "-2.06", "round -1" );
+is( round(-2.051,".02"), "-2.06", "round -2" );
+is( round(-2.049,".02"), "-2.04", "round -3" );
+is( round(-2.05,".03"),  "-2.04", "round -4" );
+is( round(-2.07,".02"),  "-2.08", "round -5" );
+is( round(-2.08,".02"),  "-2.08", "round -6" );
+
+is( round(-2.232,"15"),   "0",  "round -7" );
+is( round(-12.232,"15"),  "-15", "round -8" );
+is( round(-32.232,"15"),  "-30", "round -9" );
+is( round(-32.232,"10"),  "-30", "round -10" );
+is( round(-36.232,"10"),  "-40", "round -11" );
+is( round(-35,"10"),      "-40", "round -12" );
+is( round(-45,"10"),      "-50", "round -13" );
+
+is( round(-45),           "-45", "round -14" );
+is( round(-46),           "-46", "round -15" );
+is( round(-46.3),         "-46", "round -16" );
+# Check for banker's rounding:
+is( round(-46.5),         "-47", "round -17" );
+is( round(-47.5),         "-48", "round -18" );
+
+is( round(-0.001, .01), "0.00", "round -19" );
 
 =head2 unbiased_round
 
