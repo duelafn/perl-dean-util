@@ -4,7 +4,7 @@
 #   edit ChangeLog.txt
 #   make dist
 #   make release
-#   VV=1.085
+#   VV=$(VV); echo "$VV"
 #   git commit -am "Dean::Util $VV"
 #   git tag -s $VV -m "Dean::Util $VV"
 #   git push ; git push origin $VV
