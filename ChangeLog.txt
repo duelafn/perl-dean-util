@@ -1,4 +1,9 @@
 
+Dean::Util 1.087 released 2023-01-28
+    INCOMPATIBLE CHANGES:
+      * round(negative.5) rounds toward negative infinity rather than toward 0
+    - parse_date: fix warning when passed non-references and $SIG{__WARN__} defined
+
 Dean::Util 1.086 released 2022-09-04
     INCOMPATIBLE CHANGES:
       * Require perl 5.20, move to :prototype where needed
