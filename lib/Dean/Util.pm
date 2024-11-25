@@ -5636,6 +5636,8 @@ sub size2bytes {
     $bits = 'b' if !$bits and lc($pow) ne 'b' and $pow eq lc($pow);
     my $size;
 
+    if (uc $pow  eq 'QI') { $size = $num * 1267650600228229401496703205376 }
+    if (uc $pow  eq 'RI') { $size = $num * 1237940039285380274899124224 }
     if (uc $pow  eq 'YI') { $size = $num * 1208925819614629174706176 }
     if (uc $pow  eq 'ZI') { $size = $num * 1180591620717411303424 }
     if (uc $pow  eq 'EI') { $size = $num * 1152921504606846976 }
@@ -5645,6 +5647,8 @@ sub size2bytes {
     if (uc $pow  eq 'MI') { $size = $num * 1048576 }
     if (uc $pow  eq 'KI') { $size = $num * 1024 }
 
+    if (uc $pow  eq 'Q') { $size = $num * 1000000000000000000000000000000 }
+    if (uc $pow  eq 'R') { $size = $num * 1000000000000000000000000000 }
     if (uc $pow  eq 'Y') { $size = $num * 1000000000000000000000000 }
     if (uc $pow  eq 'Z') { $size = $num * 1000000000000000000000 }
     if (uc $pow  eq 'E') { $size = $num * 1000000000000000000 }
@@ -5683,6 +5687,8 @@ sub size2bytes_2 {
     $bits = 'b' if !$bits and lc($pow) ne 'b' and $pow eq lc($pow);
     my $size;
 
+    if (uc $pow  eq 'Q') { $size = $num * 1267650600228229401496703205376 }
+    if (uc $pow  eq 'R') { $size = $num * 1237940039285380274899124224 }
     if (uc $pow  eq 'Y') { $size = $num * 1208925819614629174706176 }
     if (uc $pow  eq 'Z') { $size = $num * 1180591620717411303424 }
     if (uc $pow  eq 'E') { $size = $num * 1152921504606846976 }
@@ -5723,6 +5729,8 @@ sub size2bytes_SI {
     $bits = 'b' if !$bits and lc($pow) ne 'b' and $pow eq lc($pow);
     my $size;
 
+    if (uc $pow  eq 'Q') { $size = $num * 1000000000000000000000000000000 }
+    if (uc $pow  eq 'R') { $size = $num * 1000000000000000000000000000 }
     if (uc $pow  eq 'Y') { $size = $num * 1000000000000000000000000 }
     if (uc $pow  eq 'Z') { $size = $num * 1000000000000000000000 }
     if (uc $pow  eq 'E') { $size = $num * 1000000000000000000 }
@@ -5757,6 +5765,8 @@ either base 2 (Ki = 1024, Mi = 1048576, ...).
 { my %sizes = qw/B 1 KiB 1024 MiB 1048576 GiB 1073741824 TiB 1099511627776
                  PiB 1125899906842624 EiB 1152921504606846976 ZiB 1180591620717411303424
                  YiB 1208925819614629174706176
+                 RiB 1237940039285380274899124224
+                 QiB 1267650600228229401496703205376
                 /;
   sub bytes2size {
     my $B = shift;
@@ -5792,6 +5802,8 @@ standard SI prefixes (K = 1000, M = 1000000, ...).
 { my %sizes = qw/B 1 KB 1000 MB 1000000 GB 1000000000 TB 1000000000000
                  PB 1000000000000000  EB 1000000000000000000  ZB 1000000000000000000000
                  YB 1000000000000000000000000
+                 RB 1000000000000000000000000000
+                 QB 1000000000000000000000000000000
                 /;
   sub bytes2size_SI {
     my $B = shift;
