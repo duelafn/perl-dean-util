@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 195;
+use Test::More;
 BEGIN { use_ok 'Dean::Util', qw/:numerical/ }
 
 #-----------------------------------------------------------------
@@ -147,8 +147,10 @@ is( round(46.3),         "46", "round 16" );
 # Check for banker's rounding:
 is( round(46.5),         "47", "round 17" );
 is( round(47.5),         "48", "round 18" );
+is( round(1.125, ".01"), "1.13", "round 19" );
+is( round(1.375, ".01"), "1.38", "round 20" );
 
-is( round(0.001, .01), "0.00", "round 19" );
+is( round(0.001, .01), "0.00", "round 21" );
 
 # Negatives
 is( round(-2.03,".02"),  "-2.04", "round -0" );
@@ -173,8 +175,15 @@ is( round(-46.3),         "-46", "round -16" );
 # Check for banker's rounding:
 is( round(-46.5),         "-47", "round -17" );
 is( round(-47.5),         "-48", "round -18" );
+is( round(-1.125, ".01"), "-1.13", "round -19" );
+is( round(-1.375, ".01"), "-1.38", "round -20" );
 
-is( round(-0.001, .01), "0.00", "round -19" );
+is( round(-0.001, .01), "0.00", "round -21" );
+
+# Check for precision oddities
+#   float("2.05") == 2.04999999999999982236431605997495353221893310546875
+is( round(2.05, ".1"),    "2.1",  "round(2.05, .1)");
+is( round(-2.05, ".1"),   "-2.1", "round(-2.05, .1)");
 
 =head2 unbiased_round
 
@@ -370,3 +379,7 @@ is( base2base("2aef", "0123456789abcdef", 10),     hex("2aef"), "base2base 3" );
 is( base2base("2aef", base_hash(16), 10),          hex("2aef"), "base2base 4" );
 is( sprintf("%.8f",base2base("152.762", 8, 10)),"106.97265625", "base2base 5" );
 is( sprintf("%.3f",base2base("106.97265625", 10, 8)),"152.762", "base2base 6" );
+
+
+
+done_testing;
