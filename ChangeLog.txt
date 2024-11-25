@@ -1,4 +1,8 @@
 
+Dean::Util 1.088 released 2024-11-25
+    - nicef - use round() to fix precision and banker rounding issues
+    - size2bytes, bytes2size - add new quetta- and ronna- SI prefixes
+
 Dean::Util 1.087 released 2023-01-28
     INCOMPATIBLE CHANGES:
       * round(negative.5) rounds toward negative infinity rather than toward 0
