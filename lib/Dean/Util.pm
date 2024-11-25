@@ -4642,12 +4642,12 @@ return -0.
 
 =cut
 
-#BEGIN: nicef, depends: untaint_int
+#BEGIN: nicef, depends: untaint_int, round
 sub nicef {
   my ($n, $d) = @_;
   $d = 2 unless defined $d;
   $d = untaint_int($d);
-  local $_ = sprintf("%.${d}f", $n);
+  local $_ = round($n, ($d ? "." . ("0"x($d-1)) . "1" : 1));
   s/0+$// if /\./; s/\.$//;
   return 0 if $_ eq '-0';
   return $_;

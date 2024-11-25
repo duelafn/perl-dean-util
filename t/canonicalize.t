@@ -58,6 +58,16 @@ use Dean::Util qw/:canonicalize/;
     is( nicef("1.235236", 5), "1.23524",  "nicef(1.235236, 5)" );
     is( nicef(100, 0),        "100",      "nicef(100, 0)" );
     is( nicef(100.1, 0),      "100",      "nicef(100.1, 0)" );
+
+    # Check for precision oddities
+    #   float("2.05") == 2.04999999999999982236431605997495353221893310546875
+    is( nicef(2.05, 1),       "2.1",      "nicef(2.05, 1)");
+
+    # Check for banker's rounding:
+    is( nicef(46.5, 0),       "47",       "nicef(46.5, 0)" );
+    is( nicef(47.5, 0),       "48",       "nicef(47.5, 0)" );
+    is( nicef(1.125, 2),      "1.13",     "nicef(1.125, 2)" );
+    is( nicef(1.375, 2),      "1.38",     "nicef(1.375, 2)" );
 }
 
 
