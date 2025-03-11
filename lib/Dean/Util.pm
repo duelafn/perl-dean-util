@@ -5837,8 +5837,8 @@ standard SI prefixes (K = 1000, M = 1000000, ...).
 
 Read only filehandle
 
+ my $fh = rofh \"<:encoding(UTF-8)", $filename;
  my $fh = rofh $filename;
- my $fh = rofh \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. If a string
 reference C<$mode> is provided as a first argument it will be taken as the
@@ -5863,8 +5863,8 @@ sub rofh {
 
 Write only filehandle
 
+ my $fh = wofh \">:encoding(UTF-8)", $filename;
  my $fh = wofh $filename;
- my $fh = wofh \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. If a string
 reference C<$mode> is provided as a first argument it will be taken as the
@@ -5889,8 +5889,8 @@ sub wofh {
 
 Read-write filehandle
 
+ my $fh = rwfh \"+<:encoding(UTF-8)", $filename;
  my $fh = rwfh $filename;
- my $fh = rwfh \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. If a string
 reference C<$mode> is provided as a first argument it will be taken as the
@@ -5915,8 +5915,8 @@ sub rwfh {
 
 Read only compressed filehandle
 
+ my $fh = rofhz \"<:gzip:encoding(UTF-8)", $filename;
  my $fh = rofhz $filename;
- my $fh = rofhz \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. Requires perl
 compiled with PerlIO support (perl 5.8, I believe). The gzip PerlIO layer
@@ -5948,8 +5948,8 @@ sub rofhz {
 
 Write only compressed filehandle
 
+ my $fh = wofhz \">:gzip:encoding(UTF-8)", $filename;
  my $fh = wofhz $filename;
- my $fh = wofhz \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. Requires perl
 compiled with PerlIO support (perl 5.8, I believe). If a string reference
@@ -5979,8 +5979,8 @@ sub wofhz {
 
 Read-write compressed filehandle
 
+ my $fh = rwfhz \"+<:gzip:encoding(UTF-8)", $filename;
  my $fh = rwfhz $filename;
- my $fh = rwfhz \$mode, $filename;
 
 Simply performs an open or croak with an appropriate message. Requires perl
 compiled with PerlIO support (perl 5.8, I believe). The gzip PerlIO layer
@@ -6010,6 +6010,7 @@ sub rwfhz {
 
 =head3 in_and_out
 
+ my ($IN, $OUT) = in_and_out( @ARGV[0,1], if_mode => "<:encoding(UTF-8)", of_mode => ">:encoding(UTF-8)" );
  my ($IN, $OUT) = in_and_out( @ARGV[0,1] );
  my ($IN, $OUT) = in_and_out( @ARGV[0,1], %options );
 
@@ -6147,6 +6148,9 @@ sub canonpath {
 
 =head3 fmap
 
+ my @foos = fmap { s/^FOO: (.*)/$_Util::fmap::file: '$1' line $./ }
+                 { if_mode => "<:encoding(UTF-8)", of_mode => ">:encoding(UTF-8)" },
+                 @files;
  my @foos = fmap { s/^FOO: (.*)/$_Util::fmap::file: '$1' line $./ } @files
  my @foos = fmap { s/^FOO: (.*)/$_Util::fmap::file: '$1' line $./ } \%options, @files
 
@@ -6234,8 +6238,8 @@ sub fmap :prototype(&@) {
 
 =head3 fgrep
 
- my @foos = fgrep { s/^FOO: (.*)/$_Util::fgrep::file: '$1' line $./ } @files
  my @foos = fgrep { s/^FOO: (.*)/$_Util::fgrep::file: '$1' line $./ } \"<:encoding(UTF-8)", @files
+ my @foos = fgrep { s/^FOO: (.*)/$_Util::fgrep::file: '$1' line $./ } @files
 
 Grep files. Loop through the lines of each file and apply a function. If
 the function returns a true value then C<$_> (after the function
@@ -6288,6 +6292,8 @@ sub fgrep :prototype(&@) {
 
 
 =head3 sed
+
+DANGER (TODO): Does not currently support setting encoding.
 
   sed { CODE } $file, %options
 
@@ -6772,8 +6778,8 @@ sub newer {
 
 =head3 lastline
 
- my $line = lastline $file;
  my $line = lastline "<:encoding(UTF-8)", $file;
+ my $line = lastline $file;
 
 Returns the last line of a file. Includes a seek() optimization based on
 the lengths of the first several lines so that reading the last line of a
@@ -6834,8 +6840,8 @@ sub lastline {
 
 See also: File::Slurp
 
+ fprint \">:encoding(UTF-8)", $filename, @stuff
  fprint $filename, @stuff
- fprint \$mode, $filename, @stuff
 
 Prints stuff to the indicated filename. If a mode is provided (for example,
 C<\"E<gt>:encoding(UTF-8)">) then it will be used instead of the default
@@ -6845,8 +6851,8 @@ mode ("E<gt>").
 
 =head3 fprint_bu
 
+ fprint_bu \">:encoding(UTF-8)", $filename, @stuff
  fprint_bu $filename, @stuff
- fprint_bu \$mode, $filename, @stuff
 
 Prints stuff to the indicated filename, but backup filename (by appending a
 ~) first. If a mode is provided (for example, C<\"E<gt>:encoding(UTF-8)">)
@@ -6858,8 +6864,8 @@ then it will be used instead of the default mode ("E<gt>").
 
 See also: File::Slurp
 
+ fappend \">>:encoding(UTF-8)", $filename, @stuff
  fappend $filename, @stuff
- fappend \$mode, $filename, @stuff
 
 Append stuff to the indicated filename. If a mode is provided (for example,
 C<\"E<gt>E<gt>:encoding(UTF-8)">) then it will be used instead of the
@@ -6880,9 +6886,9 @@ sub fprint_bu { my ($f,$mode)=(shift,">");($mode,$f)=($$f,shift) if'SCALAR'eq re
 
 =head3 fincrement
 
- fincrement $filename
+ fincrement $filename, layers => ":encoding(UTF-8)"
  fincrement $filename, $amount
- fincrement $filename, pre => $pre, post => $post, layers => $perlio_layers
+ fincrement $filename, pre => $pre, post => $post, layers => ":encoding(UTF-8)"
  fincrement $filename, $amount, pre => $pre, post => $post
 
 Increments the number contained in C<$filename>. On success, the new value
@@ -6941,8 +6947,8 @@ are applied.
 
 See also: File::Slurp
 
- my $stuff = cat $file;
- my $stuff = cat \$mode, $file;
+ my $stuff = cat \"<:encoding(UTF-8)", $file;
+ my $stuff = cat $file;                         # binary mode
 
 Read in the entirety of a file. If requested in list context, the lines are
 returned. In scalar context, the file is returned as one large string. If a
@@ -6980,12 +6986,12 @@ sub bcat {my $f=(@_)?$_[0]:$_;my$F;open $F,"<:raw", $f or croak "Can't open $f f
 
 =head3 bu_open
 
+ bu_open \":encoding(UTF-8)", $file
+ bu_open \":encoding(UTF-8)", $fh, $file
+ bu_open \":encoding(UTF-8)", $fh, $file, "$file.bak"
  bu_open $file
  bu_open $fh, $file
  bu_open $fh, $file, "$file.bak"
- bu_open \$mode, $file
- bu_open \$mode, $fh, $file
- bu_open \$mode, $fh, $file, "$file.bak"
 
  ($writer, $reader) = bu_open \$mode, $file
 
@@ -7022,23 +7028,25 @@ Finally, the final argument (if provided) will be used for the backup file
 { use Carp;
   sub bu_open {
     require File::Copy;
-    my $mode   = (@_ > 1 and (ref($_[0]) eq 'SCALAR')) ? ${+shift} : ">";
+    my $mode   = (@_ > 1 and (ref($_[0]) eq 'SCALAR')) ? ${+shift} : "";
     my $file   = (@_ > 1) ? $_[1] : $_[0];
     my $bufile = (@_ > 2) ? $_[2] : $file."~";
+    $mode =~ s/^[<>]//; # Legacy required ">" prefix.
+
     File::Copy::copy($file, $bufile) or croak "Error backing up $file as $bufile: $!" if -e $file;
     if (@_ == 1 and defined wantarray) {
       my ($writer, $reader);
-      open $writer, $mode, $file or croak "Error opening $file for writing: $!";
+      open $writer, ">$mode", $file or croak "Error opening $file for writing: $!";
       return $writer unless wantarray;
-      open $reader, "<", $bufile or croak "Error opening $bufile for reading: $!";
+      open $reader, "<$mode", $bufile or croak "Error opening $bufile for reading: $!";
       return ($writer, $reader);
     }
     elsif (@_ == 1 and readonly($_[0])) { croak "Can't use read-only value as filehandle" }
     else {
       $_[0] = undef;
-      open $_[0], $mode, $file or croak "Error opening $file for writing: $!";
+      open $_[0], ">$mode", $file or croak "Error opening $file for writing: $!";
       return $_[0] unless wantarray;
-      open my $reader, "<", $bufile or croak "Error opening $bufile for reading: $!";
+      open my $reader, "<$mode", $bufile or croak "Error opening $bufile for reading: $!";
       return ($_[0], $reader);
     }
   }
@@ -7254,6 +7262,8 @@ sub bash_complete {
 
 
 =head3 safe_pipe
+
+WARNING (TODO?): No way to specify encoding of pipe
 
  safe_pipe [ options, ] command, input
 
@@ -10231,8 +10241,7 @@ sub tex2image {
     return File::Copy::move( "$file.$opt{type}", $opt{file} );
   } else {
     my $f;
-    open $f, "<", "$file.$opt{type}" or croak "Error opening $file.$opt{type} for reading: $!";
-    binmode $f;
+    open $f, "<:raw", "$file.$opt{type}" or croak "Error opening $file.$opt{type} for reading: $!";
     local $/ = undef;
     my $x = <$f>;
     close $f;
@@ -11933,7 +11942,7 @@ gsave 1 $xscl div 1 $yscl div scale stroke grestore
 FILE
 
   if (defined $file) {
-    open my $F, ">", $file or croak "Can't open image '$file' for writing: $!";
+    open my $F, ">:raw", $file or croak "Can't open image '$file' for writing: $!";
     print $F $o{plot};
     close $F;
   }
@@ -12443,7 +12452,7 @@ $_Util::pmap::threads = sub {
       no warnings;
       my $nr_cpus = 0;
       if (-r "/proc/cpuinfo") {
-        open my $c, "<", "/proc/cpuinfo" or die;
+        open my $c, "<:raw", "/proc/cpuinfo" or die;
         $nr_cpus = 0+(grep /^processor/, <$c>);
       }
       $nr_cpus
@@ -13404,6 +13413,8 @@ sub EXEC {
 
 
 =head3 SELECT
+
+  SELECT \">:encoding(UTF-8)", "output.txt";
 
 Works like perl's select function, but is instead given a string which is
 opened as a file and then selected. The special string '-' will not change
