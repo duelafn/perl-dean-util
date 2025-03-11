@@ -123,7 +123,7 @@ use Dean::Util qw/:op/;
 
     my %datetime_t = (
         "yesterday"     => _today->add(days => -1),
-        "tomorrow"     => _today->add(days =>  1),
+        "tomorrow"      => _today->add(days =>  1),
         "5pm yesterday" => _today->add(days => -1, hours => 17),
         "yesterday 5pm" => _today->add(days => -1, hours => 17),
         "5pm"           => _today->add(hours => 17),

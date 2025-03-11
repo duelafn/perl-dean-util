@@ -5264,13 +5264,17 @@ Example:
 
 =head3 trim
 
+See also:
+  use 5.036;
+  no warnings 'experimental::builtin'; # if perl < 5.040
+  use builtin qw/ trim /;
+
 Trim leading/trailing whitespace. Trims C<$_> if no arguments provided. In
 void context, the arguments are altered, otherwise they are not changed and
 the trimmed values are returned.
 
 =cut
 
-# Speed Optimized: 2010-10-13, perl v5.10.1
 #BEGIN: trim
 sub trim {
   my ($n, $wantarray) = (scalar @_, wantarray);
@@ -7062,6 +7066,7 @@ Calls the File::Spec catfile and canonpath methods.
 #BEGIN: catfile, depends: canonpath
 sub catfile {
   canonpath( File::Spec->catfile( @_ ) )
+
 }
 #END: catfile
 
@@ -7091,6 +7096,7 @@ Unnecessary! use Cwd::realpath
 Prints strings appropriate for user-friendly bash completion.
 
 There are various desirable tricks to get user-friendly bash completions
+
 which require escaping strings at the right time and potentially removing
 common prefixes (e.g., leading directories). This function tries to do all
 that.
