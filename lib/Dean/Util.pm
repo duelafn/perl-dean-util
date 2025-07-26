@@ -8783,7 +8783,7 @@ sub mk_progressbar {
             state $last_s = "";
             state $last_t = time;
             my $now = time;
-            return "$pre$last_s$suf" if $now - $last_t < 0.45;
+            return "$pre$last_s$suf" if $last_s and $now - $last_t < 0.13;
             return "" unless $pct > 0.0001 and $pct < 1 and $now - $start > 3;
             $last_t = $now;
             my $todo = int(($now - $start) * (1-$pct)/$pct); # seconds
