@@ -1,7 +1,12 @@
 
+Dean::Util 1.089 released 2025-07-26
+    - feat: crude `eta` (estimated time) option to mk_progressbar
+    - doc:  trim() "See also" for perl `builtin`
+    - doc:  Encourage setting encoding in all file-related fns
+
 Dean::Util 1.088 released 2024-11-25
-    - nicef - use round() to fix precision and banker rounding issues
-    - size2bytes, bytes2size - add new quetta- and ronna- SI prefixes
+    - fix:  nicef - use round() to fix precision and banker rounding issues
+    - feat: size2bytes, bytes2size - add new quetta- and ronna- SI prefixes
 
 Dean::Util 1.087 released 2023-01-28
     INCOMPATIBLE CHANGES:
