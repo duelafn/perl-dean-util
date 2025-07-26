@@ -8702,6 +8702,12 @@ With the above, your code now has a nice progress bar.
 Number of items to process. Note: "total" and progress counts may be
 decimal. DEFAULT: 1
 
+=item eta
+
+When true, report an estimated time of completion assuming constant average
+progression ("percent" reporting only). Requires an accurate `total` parameter set
+(silently does nothing if total unset or if the progress exceeds `total`). DEFAULT: 0
+
 =item countdown
 
 When true, progress sub expects value to decrease from total to 0 rather
@@ -8753,19 +8759,47 @@ String to print after progress info.
 
 #BEGIN: mk_progressbar, depends: clprint
 sub mk_progressbar {
-  my %opt = (
-    # shared default options
-    total => 1, fh => \*STDERR,
-    # bar-type default options
-    type => "bar", length => 20,
-    # dot type default options
-    break => 50, space => 10,
-    # percent-type default options
-    format => "%.2f%%",
-    # spinner-type defaults
-    symbols => [ qw( - \ | / ) ],
-    @_
-  );
+    use Time::Piece;
+
+    my %opt = (
+        # shared default options
+        total => 1, fh => \*STDERR,
+        # bar-type default options
+        type => "bar", length => 20,
+        # dot type default options
+        break => 50, space => 10,
+        # percent-type default options
+        format => "%.2f%%",
+        # spinner-type defaults
+        symbols => [ qw( - \ | / ) ],
+        @_
+    );
+
+    my $eta_cb;
+    if ($opt{eta}) {
+        $eta_cb = sub($pct, $pre="", $suf="") {
+            state $start = time;
+            state $last_s = "";
+            state $last_t = time;
+            my $now = time;
+            return "$pre$last_s$suf" if $now - $last_t < 0.45;
+            return "" unless $pct > 0.0001 and $pct < 1 and $now - $start > 3;
+            $last_t = $now;
+            my $todo = int(($now - $start) * (1-$pct)/$pct); # seconds
+            if ($todo > 3600) {
+                $last_s = "finish at " . ($todo + localtime)->strftime($_Util::nice_datetime::format);
+            }
+            else {
+                my (@t, $x, $seen);
+                push @t, "${x}h" if $seen += ($x = int($todo/3600));
+                push @t, "${x}m" if $seen += ($x = int(($todo/60)%60));
+                push @t, "${x}s" if $seen += ($x = int($todo%60));
+                return "" unless @t;
+                $last_s = join(" ", @t);
+            }
+            return "$pre$last_s$suf";
+        };
+    }
 
   if ($opt{type} eq "bar") {
     my $printed = 0;
@@ -8813,8 +8847,9 @@ sub mk_progressbar {
       print { $opt{fh} } delete $opt{prefix} if defined($opt{prefix});
       my $val = $opt{countdown} ? $opt{total}-$_[0] : $_[0];
       my $percent = $val / $opt{total};
+      my $eta = ($eta_cb ? $eta_cb->($percent, " ") : "");
       $percent = 1 if $percent > 1;
-      clprint($opt{fh}, \$buffer, sprintf($opt{format},100*$percent).$suffix);
+      clprint($opt{fh}, \$buffer, sprintf($opt{format},100*$percent).$eta.$suffix);
     };
   }
 
