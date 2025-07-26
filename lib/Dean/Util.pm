@@ -8784,7 +8784,7 @@ sub mk_progressbar {
             state $last_t = time;
             my $now = time;
             return "$pre$last_s$suf" if $last_s and $now - $last_t < 0.13;
-            return "" unless $pct > 0.0001 and $pct < 1 and $now - $start > 3;
+            return ($last_s = "") unless $pct > 0.0001 and $pct < 1 and $now - $start > 3;
             $last_t = $now;
             my $todo = int(($now - $start) * (1-$pct)/$pct); # seconds
             if ($todo > 3600) {
@@ -8795,7 +8795,7 @@ sub mk_progressbar {
                 push @t, "${x}h" if $seen += ($x = int($todo/3600));
                 push @t, "${x}m" if $seen += ($x = int(($todo/60)%60));
                 push @t, "${x}s" if $seen += ($x = int($todo%60));
-                return "" unless @t;
+                return ($last_s = "") unless @t;
                 $last_s = join(" ", @t);
             }
             return "$pre$last_s$suf";
