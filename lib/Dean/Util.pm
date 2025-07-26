@@ -8787,8 +8787,11 @@ sub mk_progressbar {
             return ($last_s = "") unless $pct > 0.0001 and $pct < 1 and $now - $start > 3;
             $last_t = $now;
             my $todo = int(($now - $start) * (1-$pct)/$pct); # seconds
-            if ($todo > 3600) {
+            if ($todo > 18*3600) {
                 $last_s = "finish at " . ($todo + localtime)->strftime($_Util::nice_datetime::format);
+            }
+            elsif ($todo > 2*3600) {
+                $last_s = "finish at " . ($todo + localtime)->strftime($_Util::nice_time::format);
             }
             else {
                 my (@t, $x, $seen);
