@@ -8760,6 +8760,7 @@ String to print after progress info.
 #BEGIN: mk_progressbar, depends: clprint
 sub mk_progressbar {
     use Time::Piece;
+    use Time::HiRes qw/ time /;
 
     my %opt = (
         # shared default options
