@@ -1,4 +1,10 @@
 
+Dean::Util 1.090 released 2025-09-28
+    - fix!(pidof): use smartmatch() instead of deprecated ~~ (silences warning in perl 5.38)
+      WIll likely result in behavioral differences if you used that feature
+    - fix(mk_progressbar): "eta" option Formatting improvements
+    - fix(mk_progressbar): use hi-res time
+
 Dean::Util 1.089 released 2025-07-26
     - feat: crude `eta` (estimated time) option to mk_progressbar
     - doc:  trim() "See also" for perl `builtin`
