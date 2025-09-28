@@ -12279,7 +12279,7 @@ arguments will immediately fail.
 
 =item args
 
-Matched against array of just the command line arguments C<$VALUE ~~ @args>.
+Matched against array of just the command line arguments C<smartmatch($VALUE, @args)>.
 Programs without command line arguments will immediately fail.
 
 =item pid
@@ -12306,11 +12306,8 @@ Group id
 
 =cut
 
-#BEGIN: pidof, depends: cat
+#BEGIN: pidof, depends: cat, smartmatch
 sub pidof {
-    BEGIN {
-        warnings->unimport('experimental::smartmatch') if exists($warnings::Offsets{'experimental::smartmatch'});
-    }
     no re 'taint';
     require File::stat;
     require File::Basename;
@@ -12346,13 +12343,13 @@ sub pidof {
             if ($_ eq 'program') {
                 next PROC unless $p{cmdline}[0];
                 $p{program} = File::Basename::fileparse($p{cmdline}[0]);
-                next PROC unless $p{program} ~~ $val;
+                next PROC unless smartmatch($p{program}, $val);
             }
-            elsif ($_ eq 'command') { next PROC if !$p{cmdline}[0] or not $p{cmdline}[0] ~~ $val }
-            elsif ($_ eq 'cmdline') { next PROC unless @{$p{cmdline}} > 1 and join("\0", @{$p{cmdline}}) ~~ $val }
-            elsif ($_ eq 'args')    { next PROC unless @{$p{cmdline}} > 1 and $val ~~ [ @{$p{cmdline}}[1..$#{$p{cmdline}}] ] }
-            elsif ($_ eq 'uid')     { next PROC unless $p{stat}->uid  ~~ $val }
-            elsif ($_ eq 'gid')     { next PROC unless $p{stat}->gid  ~~ $val }
+            elsif ($_ eq 'command') { next PROC if !$p{cmdline}[0] or not smartmatch($p{cmdline}[0], $val) }
+            elsif ($_ eq 'cmdline') { next PROC unless @{$p{cmdline}} > 1 and smartmatch(join("\0", @{$p{cmdline}}), $val) }
+            elsif ($_ eq 'args')    { next PROC unless @{$p{cmdline}} > 1 and smartmatch($val, [ @{$p{cmdline}}[1..$#{$p{cmdline}}] ]) }
+            elsif ($_ eq 'uid')     { next PROC unless smartmatch($p{stat}->uid, $val) }
+            elsif ($_ eq 'gid')     { next PROC unless smartmatch($p{stat}->gid, $val) }
         }
         push @procs, \%p;
     }
@@ -13802,8 +13799,6 @@ sub SPRINTF {
 =head2 :perl6 - Perl 6 functions
 
 =head3 smartmatch
-
-Perl 5.010 pretty much killed the need for this...
 
  smartmatch( $X, $Y );
 
