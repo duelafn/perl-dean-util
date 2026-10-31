@@ -3601,7 +3601,7 @@ Pattern which matches image-type file name extensions. The list of
 extensions matched (case insensitive) are:
 
 BMP CMYK CMYKA DCM DCX DIB DPS DPX EPI EPS EPS2 EPS3 EPSF EPSI EPT FAX FITS
-FPX G3 GIF GIF87 GRAY ICB ICM ICO ICON IPTC JBG JBIG JP2 JPC JPEG JPG MAP
+FPX G3 GIF GIF87 GRAY ICB ICM ICO ICON IPTC JBG JBIG JP2 JPC JPEG JPG JXL MAP
 MIFF MNG MONO MPC MTV MVG OTB P7 PAL PALM PBM PCD PCDS PCL PCT PCX PDB PGM
 PICON PICT PIX PLASMA PNG PNM PPM PSD PTIF RAS RGB RGBA RLA RLE ROSE SGI
 SUN SVG TGA TIF TIFF UYVY VDA VICAR VID VIFF VST WBMP X XBM XC XCF XPM XV
@@ -3610,7 +3610,7 @@ XWD YUV
 =cut
 
 #BEGIN: $_re_image_ext, 1 line
-our $_re_image_ext = '(?i:bmp|cmyk|cmyka|dcm|dcx|dib|dps|dpx|epi|eps|eps2|eps3|epsf|epsi|ept|fax|fits|fpx|g3|gif|gif87|gray|icb|icm|ico|icon|iptc|jbg|jbig|jp2|jpc|jpeg|jpg|map|miff|mng|mono|mpc|mtv|mvg|otb|p7|pal|palm|pbm|pcd|pcds|pcl|pct|pcx|pdb|pgm|picon|pict|pix|plasma|png|pnm|ppm|psd|ptif|ras|rgb|rgba|rla|rle|rose|sgi|sun|svg|tga|tif|tiff|uyvy|vda|vicar|vid|viff|vst|wbmp|x|xbm|xc|xcf|xpm|xv|xwd|yuv)';
+our $_re_image_ext = '(?i:bmp|cmyk|cmyka|dcm|dcx|dib|dps|dpx|epi|eps|eps2|eps3|epsf|epsi|ept|fax|fits|fpx|g3|gif|gif87|gray|icb|icm|ico|icon|iptc|jbg|jbig|jp2|jpc|jpeg|jpg|jxl|map|miff|mng|mono|mpc|mtv|mvg|otb|p7|pal|palm|pbm|pcd|pcds|pcl|pct|pcx|pdb|pgm|picon|pict|pix|plasma|png|pnm|ppm|psd|ptif|ras|rgb|rgba|rla|rle|rose|sgi|sun|svg|tga|tif|tiff|uyvy|vda|vicar|vid|viff|vst|wbmp|x|xbm|xc|xcf|xpm|xv|xwd|yuv)';
 
 
 =head3 is_image_file
@@ -3620,7 +3620,7 @@ argument is provided, C<$_> is examined. The ist of extensions matched
 (case insensitive) are:
 
 BMP CMYK CMYKA DCM DCX DIB DPS DPX EPI EPS EPS2 EPS3 EPSF EPSI EPT FAX FITS
-FPX G3 GIF GIF87 GRAY ICB ICM ICO ICON IPTC JBG JBIG JP2 JPC JPEG JPG MAP
+FPX G3 GIF GIF87 GRAY ICB ICM ICO ICON IPTC JBG JBIG JP2 JPC JPEG JPG JXL MAP
 MIFF MNG MONO MPC MTV MVG OTB P7 PAL PALM PBM PCD PCDS PCL PCT PCX PDB PGM
 PICON PICT PIX PLASMA PNG PNM PPM PSD PTIF RAS RGB RGBA RLA RLE ROSE SGI
 SUN SVG TGA TIF TIFF UYVY VDA VICAR VID VIFF VST WBMP X XBM XC XCF XPM XV
