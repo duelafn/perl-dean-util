@@ -1,4 +1,7 @@
 
+Dean::Util 1.091 released 2026-10-31
+    - feat: add jxl as recognized image type
+
 Dean::Util 1.090 released 2025-09-28
     - fix!(pidof): use smartmatch() instead of deprecated ~~ (silences warning in perl 5.38)
       WIll likely result in behavioral differences if you used that feature
